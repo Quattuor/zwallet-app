@@ -8,6 +8,7 @@ import ChangePassword from '../screens/ProfileScreen/ChangePassword';
 import ChangePin from '../screens/ProfileScreen/ChangePin';
 import AddPhoneNumber from '../screens/ProfileScreen/AddPhoneNumber';
 import ChangePhoneNumber from '../screens/ProfileScreen/ChangePhoneNumber';
+import Topup from '../screens/TopupScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,11 @@ const MainRouter = () => {
         name="Home"
         component={Home}
         // options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Topup"
+        component={Topup}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Profile"

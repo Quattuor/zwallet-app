@@ -31,6 +31,9 @@ const ProfileScreen = ({navigation}) => {
         <View style={styles.container}>
           <View style={styles.header}>
             <Icon
+              onPress={() => {
+                navigation.goBack();
+              }}
               name="arrow-left"
               style={styles.iconBackStyle}
               size={30}

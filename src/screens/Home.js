@@ -32,6 +32,12 @@ const Home = ({navigation}) => {
           onPress={() => navigation.navigate('Profile')}
         />
       </View>
+      <View style={styles.profile}>
+        <Button
+          title="Go To Topup"
+          onPress={() => navigation.navigate('Topup')}
+        />
+      </View>
     </View>
   );
 };
