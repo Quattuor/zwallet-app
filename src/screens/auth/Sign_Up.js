@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
 import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 
-import MyStatusBar from '../../components/MyStatusBar';
 import MyTextInput from '../../components/auth/MyTextInput';
 import ButtonAuth from '../../components/auth/ButtonAuth';
+import MyStatusBar from '../../components/MyStatusBar';
 import styles from '../../styles/authStyles';
 
-const Login = () => {
-  const navigation = useNavigation();
+const Sign_Up = () => {
   const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [user, setUser] = useState({
+    name: '',
     email: '',
     pass: '',
   });
@@ -26,7 +25,11 @@ const Login = () => {
       [name]: value,
     };
 
-    if (updateValue.email.length && updateValue.pass.length) {
+    if (
+      updateValue.name.length &&
+      updateValue.email.length &&
+      updateValue.pass.length
+    ) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -34,9 +37,9 @@ const Login = () => {
   };
 
   const onSubmit = () => {
-    const {email, pass} = user;
+    const {name, pass} = user;
 
-    if (!email.trim().length && !pass.length) {
+    if (!name.trim().length && !pass.length) {
       setError('Please fulfill the form !');
     }
 
@@ -50,13 +53,20 @@ const Login = () => {
         <Text style={styles.title1}>Zwallet</Text>
       </View>
       <View style={styles.bottomContainer}>
-        <Text style={styles.title2}>Login</Text>
+        <Text style={styles.title2}>Sign Up</Text>
         <View style={styles.wrapSubtitle}>
           <Text style={styles.subtitle}>
-            Login to your existing account to access all the features in
-            Zwallet.
+            Create your accout to access Zwallet
           </Text>
         </View>
+        <MyTextInput
+          placeholder="Enter your username"
+          name="name"
+          value={user.name}
+          changeValue={changeValue}
+          left="user"
+          error={error}
+        />
         <MyTextInput
           placeholder="Enter your e-mail"
           name="email"
@@ -66,7 +76,7 @@ const Login = () => {
           error={error}
         />
         <MyTextInput
-          placeholder="Enter your password"
+          placeholder="Create your password"
           name="pass"
           value={user.pass}
           changeValue={changeValue}
@@ -74,17 +84,12 @@ const Login = () => {
           secure={true}
           error={error}
         />
-        <TouchableOpacity style={styles.btnForgotPass}>
-          <Text style={styles.forgotPass}>Forgot Password?</Text>
-        </TouchableOpacity>
         <Text style={styles.error}>{error}</Text>
         <ButtonAuth title="Login" disabled={disabled} onPress={onSubmit} />
         <View style={styles.signUpSection}>
-          <Text style={styles.signUpText1}>Don’t have an account? Let’s</Text>
-          <TouchableOpacity
-            onPress={() => navigation.push('Sign Up')}
-            style={styles.signUpBtn}>
-            <Text style={styles.signUpText2}>Sign Up</Text>
+          <Text style={styles.signUpText1}>Already have an account? Let’s</Text>
+          <TouchableOpacity style={styles.signUpBtn}>
+            <Text style={styles.signUpText2}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -92,4 +97,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Sign_Up;
