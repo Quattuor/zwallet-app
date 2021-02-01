@@ -7,13 +7,13 @@ import MyTextInput from '../../components/auth/MyTextInput';
 import ButtonAuth from '../../components/auth/ButtonAuth';
 import styles from '../../styles/authStyles';
 
-const Login = () => {
+const Reset_Pass = () => {
   const navigation = useNavigation();
   const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [user, setUser] = useState({
-    email: '',
-    pass: '',
+    pass1: '',
+    pass2: '',
   });
 
   const changeValue = (name, value) => {
@@ -26,7 +26,7 @@ const Login = () => {
       [name]: value,
     };
 
-    if (updateValue.email.length && updateValue.pass.length) {
+    if (updateValue.pass1.length && updateValue.pass2.length) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -34,14 +34,8 @@ const Login = () => {
   };
 
   const onSubmit = () => {
-    const {email, pass} = user;
-
-    if (!email.trim().length && !pass.length) {
-      setError('Please fulfill the form !');
-    }
-
     // console.log(user);
-    navigation.push('Create Pin');
+    navigation.reset();
   };
 
   return (
@@ -50,49 +44,42 @@ const Login = () => {
       <View style={styles.topContainer}>
         <Text style={styles.title1}>Zwallet</Text>
       </View>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.title2}>Login</Text>
+      <View style={styles.bottomContainer2}>
+        <Text style={styles.title2}>Reset Password</Text>
         <View style={styles.wrapSubtitle}>
           <Text style={styles.subtitle}>
-            Login to your existing account to access all the features in
-            Zwallet.
+            Create and confirm your new password so you can login to Zwallet.
           </Text>
         </View>
         <MyTextInput
-          placeholder="Enter your e-mail"
-          name="email"
-          value={user.email}
-          changeValue={changeValue}
-          left="mail"
-          error={error}
-        />
-        <MyTextInput
-          placeholder="Enter your password"
-          name="pass"
-          value={user.pass}
+          placeholder="Create new password"
+          name="pass1"
+          value={user.pass1}
           changeValue={changeValue}
           left="lock"
           secure={true}
           error={error}
         />
-        <TouchableOpacity
-          onPress={() => navigation.push('Forgot Pass')}
-          style={styles.btnForgotPass}>
-          <Text style={styles.forgotPass}>Forgot Password?</Text>
-        </TouchableOpacity>
+        <MyTextInput
+          placeholder="Confirm new password"
+          name="pass2"
+          value={user.pass2}
+          changeValue={changeValue}
+          left="lock"
+          secure={true}
+          error={error}
+        />
         <Text style={styles.error}>{error}</Text>
-        <ButtonAuth title="Login" disabled={disabled} onPress={onSubmit} />
-        <View style={styles.signUpSection}>
-          <Text style={styles.signUpText1}>Don’t have an account? Let’s</Text>
-          <TouchableOpacity
-            onPress={() => navigation.push('Sign Up')}
-            style={styles.signUpBtn}>
-            <Text style={styles.signUpText2}>Sign Up</Text>
-          </TouchableOpacity>
+        <View style={styles.bottomArea}>
+          <ButtonAuth
+            title="Reset Password"
+            disabled={disabled}
+            onPress={onSubmit}
+          />
         </View>
       </View>
     </ScrollView>
   );
 };
 
-export default Login;
+export default Reset_Pass;

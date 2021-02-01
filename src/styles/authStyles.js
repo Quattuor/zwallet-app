@@ -31,6 +31,18 @@ const authStyles = StyleSheet.create({
     borderTopRightRadius: 35,
     textAlign: 'center',
   },
+  bottomContainer2: {
+    flex: 1,
+    paddingTop: 30,
+    height: height - height / 3.5,
+    minHeight: height / 6.5,
+    backgroundColor: '#FFF',
+    padding: 15,
+    elevation: 1,
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    textAlign: 'center',
+  },
   title2: {
     ...fontRegular,
     color: '#3A3D42',
@@ -88,6 +100,11 @@ const authStyles = StyleSheet.create({
     color: '#6379F4',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  bottomArea: {
+    flex: 1,
+    // alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
 });
 
