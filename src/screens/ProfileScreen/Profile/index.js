@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -15,6 +15,14 @@ import userIcon from '../../../assets/icon/user.png';
 import BoldText from '../../../components/CustomText';
 
 const ProfileScreen = ({navigation}) => {
+  const [value, setValue] = useState(false);
+
+  const handleSwitch = () => {
+    const check = {
+      value: false,
+    };
+    setValue(check.value);
+  };
   return (
     <>
       <ScrollView
@@ -86,7 +94,11 @@ const ProfileScreen = ({navigation}) => {
                       false: 'rgba(169, 169, 169, 0.4)',
                       true: '#6379F4',
                     }}
-                    thumbColor={'white'}
+                    thumbColor={value ? 'white' : 'white'}
+                    onValueChange={(value) => {
+                      setValue(value);
+                    }}
+                    value={value}
                   />
                 }
                 iconRight={true}

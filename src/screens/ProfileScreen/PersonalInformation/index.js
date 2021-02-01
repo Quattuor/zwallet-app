@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Dimensions, StatusBar} from 'react-native';
 import {Button} from 'react-native-elements';
 import BoldText from '../../../components/CustomText';
 
-const PersonalInfo = () => {
+const PersonalInfo = ({navigation}) => {
   return (
     <>
       <StatusBar
@@ -40,15 +40,21 @@ const PersonalInfo = () => {
                 titleStyle={styles.addPhoneNumber}
                 type="clear"
                 title="Add phone number"
+                onPress={() => {
+                  navigation.navigate('Add Phone Number');
+                }}
               />
             </BoldText>
           </View>
-          {/* <Button
+          <Button
             containerStyle={styles.buttonStyle}
             titleStyle={styles.manageText}
             type="clear"
             title="Manage"
-          /> */}
+            onPress={() => {
+              navigation.navigate('Change Phone Number');
+            }}
+          />
         </View>
       </View>
     </>

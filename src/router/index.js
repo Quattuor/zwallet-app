@@ -6,6 +6,8 @@ import ProfileScreen from '../screens/ProfileScreen/Profile';
 import PersonalInfo from '../screens/ProfileScreen/PersonalInformation';
 import ChangePassword from '../screens/ProfileScreen/ChangePassword';
 import ChangePin from '../screens/ProfileScreen/ChangePin';
+import AddPhoneNumber from '../screens/ProfileScreen/AddPhoneNumber';
+import ChangePhoneNumber from '../screens/ProfileScreen/ChangePhoneNumber';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +55,34 @@ const MainRouter = () => {
       <Stack.Screen
         name="Change PIN"
         component={ChangePin}
+        options={{
+          headerStyle: {
+            backgroundColor: '#6379F4',
+            height: 110,
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+        }}
+      />
+      <Stack.Screen
+        name="Add Phone Number"
+        component={AddPhoneNumber}
+        options={{
+          headerStyle: {
+            backgroundColor: '#6379F4',
+            height: 110,
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {fontWeight: 'bold'},
+        }}
+      />
+      <Stack.Screen
+        name="Change Phone Number"
+        component={ChangePhoneNumber}
         options={{
           headerStyle: {
             backgroundColor: '#6379F4',
