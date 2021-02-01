@@ -22,7 +22,7 @@ const Home = ({navigation}) => {
         backgroundColor="transparent"
         barStyle="dark-content"
       />
-      <Text style={styles.title}>Home</Text>
+      <Text style={styles.title}>Home Develop</Text>
       {/* <Text>{API_URL}</Text> */}
       <Text>Number: {Number(auth.num)}</Text>
       <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
