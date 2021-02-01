@@ -4,7 +4,7 @@ import {plus} from '../utils/redux/actionCreators/auth';
 import {StyleSheet, Text, View, StatusBar, Button} from 'react-native';
 // import {API_URL} from '@env';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -18,7 +18,7 @@ const Home = () => {
       <Text style={styles.title}>Home Develop</Text>
       {/* <Text>{API_URL}</Text> */}
       <Text>Number: {Number(auth.num)}</Text>
-      <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
+      <Button title="Plus" onPress={() => navigation.navigate('transfer')} />
     </View>
   );
 };
