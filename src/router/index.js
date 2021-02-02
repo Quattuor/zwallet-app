@@ -7,6 +7,7 @@ import Sign_Up from '../screens/auth/Sign_Up';
 import Forgot_Pass from '../screens/auth/Forgot_Pass';
 import Reset_Pass from '../screens/auth/Reset_Pass';
 import Create_Pin from '../screens/auth/Create_Pin';
+import Success_Pin from '../screens/auth/Success_Pin';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,7 @@ const MainRouter = () => {
       <Stack.Screen
         name="Home"
         component={Home}
-        // options={{headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Login"
@@ -41,6 +42,11 @@ const MainRouter = () => {
       <Stack.Screen
         name="Create Pin"
         component={Create_Pin}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Success Pin"
+        component={Success_Pin}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

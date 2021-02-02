@@ -1,37 +1,52 @@
-import React from 'react';
-import {StyleSheet, Text, View, StatusBar, Button} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-// import {API_URL} from '@env';
-import {plus} from '../utils/redux/actionCreators/auth';
+import React, {Component} from 'react';
+import {
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
+import {connect} from 'react-redux';
+import IconF from 'react-native-vector-icons/Feather';
 
-const Home = () => {
-  const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+import MyStatusBar from '../components/MyStatusBar';
+import Photo from '../assets/images/profile.png';
+import styles from '../styles/homeStyles';
 
-  return (
-    <View>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
-      <Text style={styles.title}>Home Develop</Text>
-      <Icon name="rocket" size={30} color="#900" />
-      {/* <Text>{API_URL}</Text> */}
-      <Text>Number: {Number(auth.num)}</Text>
-      <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
-      <Button title="Login" onPress={() => navigation.navigate('Login')} />
-    </View>
-  );
-};
+class Home extends Component {
+  render() {
+    return (
+      <ScrollView>
+        <MyStatusBar />
+        <View>
+          <Image source={Photo} style={styles} />
+          <View>
+            <View>
+              <Text>Hello,</Text>
+              <Text>Robert Chandler</Text>
+            </View>
+            <TouchableOpacity>
+              <IconF name="bell" />
+              {/* <IconF name="arrow-up" /> */}
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Button
+          title="Login"
+          onPress={() => this.props.navigation.push('Login')}
+        />
+        <Button
+          title="Create Pin"
+          onPress={() => this.props.navigation.push('Create Pin')}
+        />
+      </ScrollView>
+    );
+  }
+}
 
-export default Home;
-
-const styles = StyleSheet.create({
-  title: {
-    fontFamily: 'NunitoSans-Bold',
-  },
+const mapsStateToProps = ({auth}) => ({
+  auth,
 });
+
+export default connect(mapsStateToProps)(Home);
