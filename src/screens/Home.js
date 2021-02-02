@@ -20,7 +20,9 @@ class Home extends Component {
       <ScrollView style={styles.container}>
         <MyStatusBar />
         <View style={styles.topArea}>
-          <Image source={Photo} style={styles.photo} />
+          <TouchableOpacity>
+            <Image source={Photo} style={styles.photo} />
+          </TouchableOpacity>
           <View style={styles.nameArea}>
             <View style={styles.titleArea}>
               <Text style={styles.hello}>Hello,</Text>
