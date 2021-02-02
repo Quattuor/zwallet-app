@@ -18,21 +18,36 @@ const Home = ({navigation}) => {
       <Text style={styles.title}>Home Develop</Text>
       {/* <Text>{API_URL}</Text> */}
       <Text>Number: {Number(auth.num)}</Text>
-      <Button title="Transfer" onPress={() => navigation.navigate('transfer')} />
+      <Button
+        title="Transfer"
+        onPress={() => navigation.navigate('transfer')}
+      />
       <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
-      <View style={{marginTop: 20}}>
+      <View style={styles.profile}>
         <Button
-          title="Contact"
-          onPress={() => navigation.navigate('Contact')}
+          title="Go To Profile"
+          onPress={() => navigation.navigate('Profile')}
         />
+      </View>
+      <View style={styles.profile}>
         <Button
-          title="History"
-          onPress={() => navigation.navigate('History')}
+          title="Go To Topup"
+          onPress={() => navigation.navigate('Topup')}
         />
-        <Button
-          title="Notification"
-          onPress={() => navigation.navigate('Notification')}
-        />
+        <View style={{marginTop: 20}}>
+          <Button
+            title="Contact"
+            onPress={() => navigation.navigate('Contact')}
+          />
+          <Button
+            title="History"
+            onPress={() => navigation.navigate('History')}
+          />
+          <Button
+            title="Notification"
+            onPress={() => navigation.navigate('Notification')}
+          />
+        </View>
       </View>
     </View>
   );
@@ -43,5 +58,8 @@ export default Home;
 const styles = StyleSheet.create({
   title: {
     fontFamily: 'NunitoSans-Bold',
+  },
+  profile: {
+    marginTop: 20,
   },
 });

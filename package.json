@@ -21,6 +21,7 @@
     "react-native-calendar-picker": "^7.0.9",
     "react-native-dotenv": "^2.5.1",
     "react-native-elements": "^3.1.0",
+    "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.9",
