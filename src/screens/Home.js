@@ -21,6 +21,10 @@ const Home = ({navigation}) => {
       <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
       <View style={{marginTop: 20}}>
         <Button
+          title="Contact"
+          onPress={() => navigation.navigate('Contact')}
+        />
+        <Button
           title="History"
           onPress={() => navigation.navigate('History')}
         />
