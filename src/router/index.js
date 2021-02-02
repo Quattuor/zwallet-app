@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
 
 import Home from '../screens/Home';
 import ProfileScreen from '../screens/ProfileScreen/Profile';
@@ -9,10 +10,23 @@ import ChangePin from '../screens/ProfileScreen/ChangePin';
 import AddPhoneNumber from '../screens/ProfileScreen/AddPhoneNumber';
 import ChangePhoneNumber from '../screens/ProfileScreen/ChangePhoneNumber';
 import Topup from '../screens/TopupScreen';
+import Contact from '../screens/Contact';
+import History from '../screens/History';
+import Notification from '../screens/Notification';
+import {
+  transferInput,
+  transferPin,
+  transferConfirm,
+  transferSuccess,
+  transferFailed,
+} from '../screens/transfer';
 
 const Stack = createStackNavigator();
 
 const MainRouter = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -98,6 +112,50 @@ const MainRouter = () => {
           },
           headerTintColor: 'white',
           headerTitleStyle: {fontWeight: 'bold'},
+        }}
+      />
+      <Stack.Screen
+        name="transfer"
+        component={transferInput}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="confirmation"
+        component={transferConfirm}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="pinToTransfer"
+        component={transferPin}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="transferSuccess"
+        component={transferSuccess}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="transferFailed"
+        component={transferFailed}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Contact"
+        component={Contact}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{
+          title: 'History',
+        }}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          title: 'Notification',
         }}
       />
     </Stack.Navigator>
