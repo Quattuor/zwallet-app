@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  StyleSheet,
+  StatusBar,
 } from 'react-native';
 import {connect} from 'react-redux';
 import IconF from 'react-native-vector-icons/Feather';
@@ -39,72 +41,59 @@ class Home extends Component {
           title="Create Pin"
           onPress={() => this.props.navigation.push('Create Pin')}
         />
+        <View>
+          <StatusBar
+            translucent
+            backgroundColor="transparent"
+            barStyle="dark-content"
+          />
+          <Button
+            title="Transfer"
+            onPress={() => this.props.navigation.push('transfer')}
+          />
+          <View style={style.profile}>
+            <Button
+              title="Go To Profile"
+              onPress={() => this.props.navigation.push('Profile')}
+            />
+          </View>
+          <View style={style.profile}>
+            <Button
+              title="Go To Topup"
+              onPress={() => this.props.navigation.push('Topup')}
+            />
+            <View style={{marginTop: 20}}>
+              <Button
+                title="Contact"
+                onPress={() => this.props.navigation.push('Contact')}
+              />
+              <Button
+                title="History"
+                onPress={() => this.props.navigation.push('History')}
+              />
+              <Button
+                title="Notification"
+                onPress={() => this.props.navigation.push('Notification')}
+              />
+            </View>
+          </View>
+        </View>
       </ScrollView>
     );
   }
 }
 
-const mapsStateToProps = ({auth}) => ({
-  auth,
-=======
-const Home = ({navigation}) => {
-  const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  return (
-    <View>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
-      <Text style={styles.title}>Home Develop</Text>
-      {/* <Text>{API_URL}</Text> */}
-      <Text>Number: {Number(auth.num)}</Text>
-      <Button
-        title="Transfer"
-        onPress={() => navigation.navigate('transfer')}
-      />
-      <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
-      <View style={styles.profile}>
-        <Button
-          title="Go To Profile"
-          onPress={() => navigation.navigate('Profile')}
-        />
-      </View>
-      <View style={styles.profile}>
-        <Button
-          title="Go To Topup"
-          onPress={() => navigation.navigate('Topup')}
-        />
-        <View style={{marginTop: 20}}>
-          <Button
-            title="Contact"
-            onPress={() => navigation.navigate('Contact')}
-          />
-          <Button
-            title="History"
-            onPress={() => navigation.navigate('History')}
-          />
-          <Button
-            title="Notification"
-            onPress={() => navigation.navigate('Notification')}
-          />
-        </View>
-      </View>
-    </View>
-  );
-};
-
-export default Home;
-
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   title: {
     fontFamily: 'NunitoSans-Bold',
   },
   profile: {
     marginTop: 20,
   },
+});
+
+const mapsStateToProps = ({auth}) => ({
+  auth,
 });
 
 export default connect(mapsStateToProps)(Home);
