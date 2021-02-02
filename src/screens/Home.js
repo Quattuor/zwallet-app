@@ -18,8 +18,17 @@ const Home = ({navigation}) => {
       <Text style={styles.title}>Home Develop</Text>
       {/* <Text>{API_URL}</Text> */}
       <Text>Number: {Number(auth.num)}</Text>
+      <Button title="Transfer" onPress={() => navigation.navigate('transfer')} />
       <Button title="Plus" onPress={() => dispatch(plus(Number(auth.num)))} />
       <View style={{marginTop: 20}}>
+        <Button
+          title="Contact"
+          onPress={() => navigation.navigate('Contact')}
+        />
+        <Button
+          title="History"
+          onPress={() => navigation.navigate('History')}
+        />
         <Button
           title="Notification"
           onPress={() => navigation.navigate('Notification')}
