@@ -12,6 +12,7 @@ import {
 } from '../screens/transfer';
 import Contact from '../screens/Contact';
 import History from '../screens/History';
+import Notification from '../screens/Notification';
 
 const Stack = createStackNavigator();
 
@@ -61,6 +62,13 @@ const MainRouter = () => {
         component={History}
         options={{
           title: 'History',
+        }}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          title: 'Notification',
         }}
       />
     </Stack.Navigator>
