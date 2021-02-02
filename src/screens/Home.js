@@ -24,6 +24,10 @@ const Home = ({navigation}) => {
           title="Contact"
           onPress={() => navigation.navigate('Contact')}
         />
+        <Button
+          title="History"
+          onPress={() => navigation.navigate('History')}
+        />
       </View>
     </View>
   );

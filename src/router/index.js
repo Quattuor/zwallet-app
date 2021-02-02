@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Home from '../screens/Home';
 import Contact from '../screens/Contact';
+import History from '../screens/History';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,13 @@ const MainRouter = () => {
         name="Contact"
         component={Contact}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{
+          title: 'History',
+        }}
       />
     </Stack.Navigator>
   );
