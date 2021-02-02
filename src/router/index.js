@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -10,7 +10,8 @@ import {
   transferSuccess,
   transferFailed,
 } from '../screens/transfer';
-import {useEffect} from 'react';
+import Contact from '../screens/Contact';
+import History from '../screens/History';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,6 @@ const MainRouter = () => {
         component={Home}
         // options={{headerShown: false}}
       />
-
       <Stack.Screen
         name="transfer"
         component={transferInput}
@@ -50,6 +50,18 @@ const MainRouter = () => {
         name="transferFailed"
         component={transferFailed}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Contact"
+        component={Contact}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{
+          title: 'History',
+        }}
       />
     </Stack.Navigator>
   );
