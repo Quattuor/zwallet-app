@@ -16,6 +16,7 @@ const MyTextInput = ({
   left,
   secure = false,
   name,
+  max,
 }) => {
   const [color, setColor] = useState('rgba(169, 169, 169, 0.6);');
   const [hide, setHide] = useState(true);
@@ -45,6 +46,7 @@ const MyTextInput = ({
         <TextInput
           placeholder={placeholder}
           value={value}
+          maxLength={max ? max : 100}
           secureTextEntry={secure && hide ? true : false}
           style={{
             ...styles.input,

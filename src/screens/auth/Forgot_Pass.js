@@ -1,13 +1,18 @@
 import React, {useState} from 'react';
 import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import axios from 'axios';
 
+import {sendOtp} from '../../utils/redux/actionCreators/auth';
 import MyStatusBar from '../../components/MyStatusBar';
 import MyTextInput from '../../components/auth/MyTextInput';
 import ButtonAuth from '../../components/auth/ButtonAuth';
 import styles from '../../styles/authStyles';
+import {API_URL} from '@env';
 
 const Forgot_Pass = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -32,15 +37,31 @@ const Forgot_Pass = () => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const {email} = user;
 
     if (!email.trim().length) {
       setError('Please fulfill the form !');
     }
+    axios
+      .post(API_URL + '/auth/send_otp', {email})
+      .then(({data}) => {
+        if (data.error) {
+          setError(data.message);
+        } else {
+          setError('');
+        }
 
+        if (data.data) {
+          setUser({email: ''});
+          navigation.navigate('Otp');
+        }
+      })
+      .catch((e) => {
+        console.log(e, 'Error');
+      });
     // console.log(user);
-    navigation.push('Reset Pass');
+    // navigation.push('Reset Pass');
   };
 
   return (

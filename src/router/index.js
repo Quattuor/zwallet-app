@@ -27,6 +27,9 @@ import {
   transferSuccess,
   transferFailed,
 } from '../screens/transfer';
+import {useSocket} from '../utils/context/socketProvider';
+import {Alert} from 'react-native';
+import Otp from '../screens/auth/Otp';
 
 const Stack = createStackNavigator();
 
@@ -34,17 +37,35 @@ const MainRouter = () => {
   const token = useSelector((state) => state.auth.login);
   const [route, setRoute] = useState(!token.data ? 'Login' : 'Home');
 
-  console.log('ROUTER', token);
+  // console.log('ROUTER', token);
   useEffect(() => {
     if (!token.data) {
-      console.log('TOKEN KOSONG');
+      // console.log('TOKEN KOSONG');
       setRoute('Login');
     } else {
-      console.log('ADA');
+      // console.log('ADA');
       setRoute('Home');
     }
     SplashScreen.hide();
-  }, []);
+  }, [token.data]);
+
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (socket === undefined) {
+      return;
+    }
+    socket.on('connect', () => {
+      socket.on('topup', ({title, message}) => {
+        //local notification
+        Alert.alert(title, message);
+        console.log(message);
+      });
+      // socket.on('transaction')
+    });
+    return () => socket.off('connect');
+  }, [socket]);
+
   return (
     <Stack.Navigator initialRouteName={route}>
       <Stack.Screen
@@ -67,6 +88,7 @@ const MainRouter = () => {
         component={Forgot_Pass}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}} />
       <Stack.Screen
         name="Reset Pass"
         component={Reset_Pass}
