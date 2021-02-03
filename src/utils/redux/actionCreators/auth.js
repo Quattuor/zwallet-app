@@ -21,6 +21,11 @@ export const loginUser = (data) => ({
   payload: axios.post(API_URL + '/auth/login', data),
 });
 
+export const sendOtp = (data) => ({
+  type: 'OTP',
+  payload: axios.post(API_URL + '/auth/send_otp', data),
+});
+
 export const logoutUser = () => {
   return {
     type: logoutUserString,

@@ -29,6 +29,7 @@ import {
 } from '../screens/transfer';
 import {useSocket} from '../utils/context/socketProvider';
 import {Alert} from 'react-native';
+import Otp from '../screens/auth/Otp';
 
 const Stack = createStackNavigator();
 
@@ -87,6 +88,7 @@ const MainRouter = () => {
         component={Forgot_Pass}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}} />
       <Stack.Screen
         name="Reset Pass"
         component={Reset_Pass}
