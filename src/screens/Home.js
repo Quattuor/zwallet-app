@@ -18,79 +18,87 @@ import styles from '../styles/homeStyles';
 class Home extends Component {
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <MyStatusBar />
-        <View>
-          <Image source={Photo} style={styles} />
-          <View>
-            <View>
-              <Text>Hello,</Text>
-              <Text>Robert Chandler</Text>
+        <View style={styles.topArea}>
+          <TouchableOpacity>
+            <Image source={Photo} style={styles.photo} />
+          </TouchableOpacity>
+          <View style={styles.nameArea}>
+            <View style={styles.titleArea}>
+              <Text style={styles.hello}>Hello,</Text>
+              <Text style={styles.name}>Robert Chandler</Text>
             </View>
-            <TouchableOpacity>
-              <IconF name="bell" />
-              {/* <IconF name="arrow-up" /> */}
+            <TouchableOpacity style={styles.btnBell}>
+              <IconF name="bell" color="#4D4B57" size={23} />
             </TouchableOpacity>
           </View>
         </View>
-        <Button
-          title="Login"
-          onPress={() => this.props.navigation.push('Login')}
-        />
-        <Button
-          title="Create Pin"
-          onPress={() => this.props.navigation.push('Create Pin')}
-        />
-        <View>
-          <StatusBar
-            translucent
-            backgroundColor="transparent"
-            barStyle="dark-content"
-          />
-          <Button
-            title="Transfer"
-            onPress={() => this.props.navigation.push('transfer')}
-          />
-          <View style={style.profile}>
-            <Button
-              title="Go To Profile"
-              onPress={() => this.props.navigation.push('Profile')}
-            />
+        <View style={styles.infoPadd}>
+          <View style={styles.infoArea}>
+            <Text style={styles.subtitle}>Balance</Text>
+            <Text style={styles.balance}>Rp120.000</Text>
+            <Text style={styles.subtitle}>+62 813-9387-7946</Text>
           </View>
-          <View style={style.profile}>
-            <Button
-              title="Go To Topup"
-              onPress={() => this.props.navigation.push('Topup')}
-            />
-            <View style={{marginTop: 20}}>
-              <Button
-                title="Contact"
-                onPress={() => this.props.navigation.push('Contact')}
-              />
-              <Button
-                title="History"
-                onPress={() => this.props.navigation.push('History')}
-              />
-              <Button
-                title="Notification"
-                onPress={() => this.props.navigation.push('Notification')}
-              />
+        </View>
+        <View style={styles.btnList}>
+          <TouchableOpacity style={styles.btnType}>
+            <IconF name="arrow-up" color="#608DE2" size={21} />
+            <Text style={styles.btnTypeText}>Transfer</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnType}>
+            <IconF name="plus" color="#608DE2" size={21} />
+            <Text style={styles.btnTypeText}>Top Up</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.rowText}>
+          <Text style={styles.btnTypeText}>Transaction History</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeAll}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.cardList}>
+          <TouchableOpacity>
+            <View style={styles.cardBox}>
+              <Image source={Photo} style={styles.photo} />
+              <View style={styles.nameArea}>
+                <View>
+                  <Text style={styles.cardTitle}>Samuel Suhi</Text>
+                  <Text style={styles.cardSub}>Transfer</Text>
+                </View>
+                <Text style={styles.cardType1}>+Rp50.000</Text>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.cardBox}>
+              <Image source={Photo} style={styles.photo} />
+              <View style={styles.nameArea}>
+                <View>
+                  <Text style={styles.cardTitle}>Samuel Suhi</Text>
+                  <Text style={styles.cardSub}>Transfer</Text>
+                </View>
+                <Text style={styles.cardType1}>+Rp50.000</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.cardBox}>
+              <Image source={Photo} style={styles.photo} />
+              <View style={styles.nameArea}>
+                <View>
+                  <Text style={styles.cardTitle}>Samuel Suhi</Text>
+                  <Text style={styles.cardSub}>Transfer</Text>
+                </View>
+                <Text style={styles.cardType1}>+Rp50.000</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     );
   }
 }
-
-const style = StyleSheet.create({
-  title: {
-    fontFamily: 'NunitoSans-Bold',
-  },
-  profile: {
-    marginTop: 20,
-  },
-});
 
 const mapsStateToProps = ({auth}) => ({
   auth,
