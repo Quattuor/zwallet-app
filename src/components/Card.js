@@ -3,12 +3,17 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Card = (props) => {
-  let txtcolor = Number(props.price);
-  if (txtcolor >= 0) {
+  let txtcolor = 'red';
+  if (props.type === 'Top Up') {
     txtcolor = 'green';
-  } else {
-    txtcolor = 'red';
   }
+  // if (txtcolor >= 0) {
+  //   txtcolor = 'green';
+  // } else {
+  //   txtcolor = 'red';
+  // }
+
+  console.log(props.Img);
 
   const [color, setcolor] = useState(txtcolor);
 
@@ -21,7 +26,7 @@ const Card = (props) => {
     >
       <View style={{flexDirection: 'row'}}>
         <View style={styles.containerImage}>
-          <Image style={styles.img} source={props.Img} />
+          <Image style={styles.img} source={{uri: props.Img}} />
         </View>
         <View style={styles.txtContainer}>
           <Text style={styles.txtName}>{props.name}</Text>

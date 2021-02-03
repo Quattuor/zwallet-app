@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,6 +11,9 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import image from '../../assets/icon/logo.png';
 import FastImage from 'react-native-fast-image';
+import {useSelector} from 'react-redux';
+import {API_URL} from '@env';
+import axios from 'axios';
 
 const data = [
   {
@@ -47,6 +51,31 @@ const data = [
 ];
 
 const Topup = ({navigation}) => {
+  const getData = useSelector((state) => state.auth.login);
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (getData.data) {
+        axios
+          .get(`${API_URL}/user/${getData.data.id}`, {
+            headers: {
+              'x-access-token': 'Bearer ' + getData.data.token,
+            },
+          })
+          .then(({data}) => {
+            setUserData(data.data[0]);
+          })
+          .catch(({response}) => {
+            console.log(response.data);
+          });
+      }
+    });
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <View style={[styles.container, {flex: 1}]}>
@@ -71,7 +100,7 @@ const Topup = ({navigation}) => {
             <FastImage style={styles.cardImage} source={image} />
             <View style={styles.headerCardText}>
               <Text style={styles.virtualText}>Virtual Account Number</Text>
-              <Text style={styles.phoneNumberText}>2389 081393877946</Text>
+              <Text style={styles.phoneNumberText}>{userData.id_virtual}</Text>
             </View>
           </View>
         </View>
