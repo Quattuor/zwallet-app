@@ -14,6 +14,7 @@
 - [Usage](#Usage)
 - [Demo](#demo)
 - [Related Project](#related-project)
+- [License](#license)
 
 ## Description
 
@@ -88,3 +89,7 @@ Zwallet build version.
 RESTful API for this application, clone this for development Zwallet.
 
 <a href="https://github.com/Quattuor/zwallet-api">REST API</a>
+
+## License
+
+Distributed under the [MIT](https://github.com/Quattuor/zwallet-app/blob/main/LICENSE) License.
