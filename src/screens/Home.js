@@ -45,7 +45,11 @@ class Home extends Component {
         <View style={styles.btnList}>
           <TouchableOpacity style={styles.btnType}>
             <IconF name="arrow-up" color="#608DE2" size={21} />
-            <Text style={styles.btnTypeText}>Transfer</Text>
+            <Text
+              style={styles.btnTypeText}
+              onPress={() => this.props.navigation.navigate('Contact')}>
+              Transfer
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnType}>
             <IconF name="plus" color="#608DE2" size={21} />

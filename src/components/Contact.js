@@ -11,8 +11,8 @@ const Contact = (props) => {
         style={styles.allContacts}
         onPress={() => {
           props.setReceiverRedux(
-            props.id,
-            props.name,
+            props.id_user,
+            props.username,
             props.photo,
             props.phone,
           );
@@ -23,7 +23,7 @@ const Contact = (props) => {
           source={{uri: API_URL + props.photo, width: 50, height: 50}}
         />
         <View style={{marginHorizontal: 15}}>
-          <Text style={styles.textContacts}>{props.name}</Text>
+          <Text style={styles.textContacts}>{props.username}</Text>
           <Text style={styles.textPhone}>{props.phone}</Text>
         </View>
       </TouchableOpacity>
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setReceiverRedux: (id, username, photo, phone) =>
-      dispatch(setReceiver(id, username, photo, phone)),
+    setReceiverRedux: (id_user, username, photo, phone) =>
+      dispatch(setReceiver(id_user, username, photo, phone)),
   };
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -32,7 +33,7 @@ const Contact = ({navigation}) => {
     axios
       .get(`${API_URL}/contact/${id_user}`, config)
       .then(({data}) => {
-        console.log('sukses get data');
+        console.log('Sukses');
         setContact(data.data);
       })
       .catch((err) => {
@@ -57,6 +58,7 @@ const Contact = ({navigation}) => {
 
   useEffect(() => {
     listContact();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   console.log(receiver);
 
@@ -116,13 +118,13 @@ const Contact = ({navigation}) => {
           </Text>
         </View>
         {receiver &&
-          receiver.map(({id, name, phone, photo}) => {
+          receiver.map(({id_user, username, phone, photo}) => {
             return (
               <Card
-                key={id}
-                id={id}
+                key={id_user}
+                id={id_user}
                 navigation={navigation}
-                name={name}
+                username={username}
                 photo={photo}
                 phone={phone}
               />
