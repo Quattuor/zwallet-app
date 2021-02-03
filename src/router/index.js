@@ -26,6 +26,10 @@ import {
   transferSuccess,
   transferFailed,
 } from '../screens/transfer';
+import Contact from '../screens/Contact';
+import History from '../screens/History';
+import {useSocket} from '../utils/context/socketProvider';
+import {Alert} from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +37,24 @@ const MainRouter = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (socket === undefined) {
+      return;
+    }
+    socket.on('connect', () => {
+      socket.on('topup', ({title, message}) => {
+        //local notification
+        Alert.alert(title, message);
+        console.log(message);
+      });
+      // socket.on('transaction')
+    });
+    return () => socket.off('connect');
+  }, [socket]);
+
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
