@@ -68,7 +68,7 @@ class Login extends Component {
 
       if (login.data) {
         if (login.data.pin) {
-          navigation.pop();
+          navigation.navigate('Home');
         } else {
           navigation.push('Create Pin');
         }

@@ -2,6 +2,7 @@ import {
   loginUserString,
   signupUserString,
   createPinString,
+  getUserProfile,
   pending,
   rejected,
   fulfilled,

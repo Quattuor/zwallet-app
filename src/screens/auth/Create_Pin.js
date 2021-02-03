@@ -84,7 +84,7 @@ class Create_Pin extends Component {
 
     if (pin.data) {
       // if (pin.data.pin) {
-      navigation.pop();
+      navigation.push('Success Pin');
       // } else {
       //   navigation.push('Create Pin');
       // }
