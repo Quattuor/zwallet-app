@@ -7,15 +7,88 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Image,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import userIcon from '../../../assets/icon/user.png';
 import BoldText from '../../../components/CustomText';
+import {useSelector} from 'react-redux';
+import {API_URL} from '@env';
+import axios from 'axios';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const ProfileScreen = ({navigation}) => {
+  const token = useSelector((state) => state.auth.login.data.token);
+  console.log('TOKEN', token);
+  const id = useSelector((state) => state.auth.login.data.id);
+  console.log('ID USER', id);
+
   const [value, setValue] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [photo, setPhoto] = useState([]);
+
+  const config = {
+    headers: {
+      'x-access-token': 'Bearer ' + token,
+    },
+  };
+
+  console.log('DATAA USER', userData);
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/user/${id}`, config)
+      .then(({data}) => {
+        setUserData(data.data[0]);
+      })
+      .catch(({response}) => {
+        console.log(response.data);
+      });
+  }, []);
+
+  const addPhoto = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+      mediaType: 'photo',
+    })
+      .then((images) => {
+        console.log('PHOTO', images.length);
+        setPhoto(images);
+      })
+      .catch((err) => {
+        console.log('ERROR', err);
+      });
+  };
+
+  const uploadFoto = () => {
+    const pictureData = new FormData();
+    console.log('FOTO', photo);
+    for (let i = 0; i < photo.length; i++) {
+      pictureData.append('photo', {
+        name: photo[i].path.split('/').pop(),
+        type: photo[i].mime,
+        uri:
+          Platform.OS === 'android'
+            ? photo[i].path
+            : photo[i].path.replace('file://', ''),
+      });
+    }
+    console.log('PICTURE', pictureData);
+    axios
+      .patch(`${API_URL}/user/img/${id}`, pictureData, config)
+      .then(async ({data}) => {
+        await addPhoto();
+        navigation.reset({
+          index: 1,
+          routes: [{name: 'Home'}, {name: 'Profile'}],
+        });
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
+  };
 
   const handleSwitch = () => {
     const check = {
@@ -29,27 +102,91 @@ const ProfileScreen = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20, backgroundColor: 'white'}}>
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Icon
-              onPress={() => {
-                navigation.goBack();
-              }}
-              name="arrow-left"
-              style={styles.iconBackStyle}
-              size={30}
-              color="#4D4B57"
-            />
-            <FastImage style={styles.image} source={userIcon} />
-            <Button
-              icon={<Icon name="edit-2" />}
-              buttonStyle={styles.editButtonStyle}
-              type="clear"
-              title="Edit"
-              titleStyle={styles.titleStyle}
-            />
-            <BoldText style={styles.nameText}>Robert Chandler</BoldText>
-            <Text style={styles.phoneNumber}>+62 813-9387-7946</Text>
-          </View>
+          {userData !== undefined ? (
+            <View style={styles.header}>
+              <Icon
+                onPress={() => {
+                  navigation.goBack();
+                }}
+                name="arrow-left"
+                style={styles.iconBackStyle}
+                size={30}
+                color="#4D4B57"
+              />
+              {photo.length < 1 ? (
+                <Image
+                  style={styles.image}
+                  source={{uri: API_URL + userData.photo}}
+                />
+              ) : (
+                <Image style={styles.image} source={{uri: photo[0].path}} />
+              )}
+              {/* <FastImage style={styles.image} source={userIcon} /> */}
+              {/* {foto.map((item) => {
+                return (
+                  <FastImage
+                    style={styles.image}
+                    source={{uri: foto.length !== 0 ? item.path : ''}}
+                    key={foto.indexOf(item)}
+                  />
+                );
+              })} */}
+              {/* <FastImage style={styles.image} source={{uri: foto.path}} /> */}
+              {photo.length < 1 ? (
+                <Button
+                  icon={<Icon name="edit-2" />}
+                  buttonStyle={styles.editButtonStyle}
+                  type="clear"
+                  title="Edit"
+                  titleStyle={styles.titleStyle}
+                  onPress={addPhoto}
+                />
+              ) : (
+                <Button
+                  icon={<Icon name="edit-2" />}
+                  buttonStyle={styles.editButtonStyle}
+                  type="clear"
+                  title="Edit"
+                  titleStyle={styles.titleStyle}
+                  onPress={uploadFoto}
+                />
+              )}
+              {/* <Button
+                icon={<Icon name="edit-2" />}
+                buttonStyle={styles.editButtonStyle}
+                type="clear"
+                title="Edit"
+                titleStyle={styles.titleStyle}
+                onPress={uploadFoto}
+              /> */}
+              <BoldText style={styles.nameText}>
+                {userData.username} {userData.lastname}
+              </BoldText>
+              <Text style={styles.phoneNumber}>{userData.phone}</Text>
+            </View>
+          ) : (
+            <View style={styles.header}>
+              <Icon
+                onPress={() => {
+                  navigation.goBack();
+                }}
+                name="arrow-left"
+                style={styles.iconBackStyle}
+                size={30}
+                color="#4D4B57"
+              />
+              <FastImage style={styles.image} source={userIcon} />
+              <Button
+                icon={<Icon name="edit-2" />}
+                buttonStyle={styles.editButtonStyle}
+                type="clear"
+                title="Edit"
+                titleStyle={styles.titleStyle}
+              />
+              <BoldText style={styles.nameText}>Robert Chandler</BoldText>
+              <Text style={styles.phoneNumber}>+62 813-9387-7946</Text>
+            </View>
+          )}
           <View
             style={{flexDirection: 'column', justifyContent: 'space-between'}}>
             <View style={styles.buttonContainer}>

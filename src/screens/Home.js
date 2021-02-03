@@ -21,7 +21,8 @@ class Home extends Component {
       <ScrollView style={styles.container}>
         <MyStatusBar />
         <View style={styles.topArea}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Profile')}>
             <Image source={Photo} style={styles.photo} />
           </TouchableOpacity>
           <View style={styles.nameArea}>

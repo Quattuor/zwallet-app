@@ -29,9 +29,9 @@ const Success_Pin = () => {
         </Text>
         <View style={styles.bottomButton}>
           <ButtonAuth
-            title="Login Now"
+            title="Home"
             disabled={false}
-            onPress={() => navigation.pop()}
+            onPress={() => navigation.push('Home')}
           />
         </View>
       </View>
