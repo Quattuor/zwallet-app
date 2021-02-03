@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  StyleSheet,
+  StatusBar,
 } from 'react-native';
 import {connect} from 'react-redux';
 import IconF from 'react-native-vector-icons/Feather';
