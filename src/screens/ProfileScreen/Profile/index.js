@@ -38,28 +38,25 @@ const ProfileScreen = ({navigation}) => {
   const [userData, setUserData] = useState({});
   const [photo, setPhoto] = useState([]);
 
-  // const config = {
-  //   headers: {
-  //     'x-access-token': 'Bearer ' + getData.data.token,
-  //   },
-  // };
-
   console.log('DATAA USER', userData);
   useEffect(() => {
-    if (getData.data) {
-      axios
-        .get(`${API_URL}/user/${getData.data.id}`, {
-          headers: {
-            'x-access-token': 'Bearer ' + getData.data.token,
-          },
-        })
-        .then(({data}) => {
-          setUserData(data.data[0]);
-        })
-        .catch(({response}) => {
-          console.log(response);
-        });
-    }
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (getData.data) {
+        axios
+          .get(`${API_URL}/user/${getData.data.id}`, {
+            headers: {
+              'x-access-token': 'Bearer ' + getData.data.token,
+            },
+          })
+          .then(({data}) => {
+            setUserData(data.data[0]);
+          })
+          .catch(({response}) => {
+            console.log(response.data);
+          });
+      }
+    });
+    return unsubscribe;
   }, [getData.data]);
 
   const addPhoto = () => {
@@ -68,7 +65,7 @@ const ProfileScreen = ({navigation}) => {
       mediaType: 'photo',
     })
       .then((images) => {
-        console.log('PHOTO', images.length);
+        console.log('PHOTO', images);
         setPhoto(images);
       })
       .catch((err) => {
@@ -97,6 +94,7 @@ const ProfileScreen = ({navigation}) => {
         },
       })
       .then(async ({data}) => {
+        addPhoto();
         await navigation.reset({
           index: 1,
           routes: [{name: 'Home'}, {name: 'Profile'}],
@@ -165,52 +163,26 @@ const ProfileScreen = ({navigation}) => {
                 size={30}
                 color="#4D4B57"
               />
-              {photo.length < 1 ? (
+              {photo.length !== 0 ? (
                 <Image
                   style={styles.image}
-                  source={{uri: API_URL + userData.photo}}
+                  source={
+                    photo.length < 1
+                      ? {uri: API_URL + userData.photo}
+                      : {uri: photo[0].path}
+                  }
                 />
               ) : (
-                <Image style={styles.image} source={{uri: photo[0].path}} />
+                <Image style={styles.image} source={userIcon} />
               )}
-              {/* <FastImage style={styles.image} source={userIcon} /> */}
-              {/* {foto.map((item) => {
-                return (
-                  <FastImage
-                    style={styles.image}
-                    source={{uri: foto.length !== 0 ? item.path : ''}}
-                    key={foto.indexOf(item)}
-                  />
-                );
-              })} */}
-              {/* <FastImage style={styles.image} source={{uri: foto.path}} /> */}
-              {photo.length < 1 ? (
-                <Button
-                  icon={<Icon name="edit-2" />}
-                  buttonStyle={styles.editButtonStyle}
-                  type="clear"
-                  title="Edit"
-                  titleStyle={styles.titleStyle}
-                  onPress={addPhoto}
-                />
-              ) : (
-                <Button
-                  icon={<Icon name="edit-2" />}
-                  buttonStyle={styles.editButtonStyle}
-                  type="clear"
-                  title="Edit"
-                  titleStyle={styles.titleStyle}
-                  onPress={uploadFoto}
-                />
-              )}
-              {/* <Button
+              <Button
                 icon={<Icon name="edit-2" />}
                 buttonStyle={styles.editButtonStyle}
                 type="clear"
                 title="Edit"
                 titleStyle={styles.titleStyle}
-                onPress={uploadFoto}
-              /> */}
+                onPress={addPhoto}
+              />
               <BoldText style={styles.nameText}>
                 {userData.username} {userData.lastname}
               </BoldText>

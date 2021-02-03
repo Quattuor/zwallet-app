@@ -1,9 +1,36 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, Dimensions, StatusBar} from 'react-native';
 import {Button} from 'react-native-elements';
 import BoldText from '../../../components/CustomText';
+import {useSelector, useDispatch} from 'react-redux';
+import {API_URL} from '@env';
+import axios from 'axios';
 
 const PersonalInfo = ({navigation}) => {
+  const getData = useSelector((state) => state.auth.login);
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (getData.data) {
+        axios
+          .get(`${API_URL}/user/${getData.data.id}`, {
+            headers: {
+              'x-access-token': 'Bearer ' + getData.data.token,
+            },
+          })
+          .then(({data}) => {
+            setUserData(data.data[0]);
+          })
+          .catch(({response}) => {
+            console.log(response.data);
+          });
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <>
       <StatusBar
@@ -19,42 +46,61 @@ const PersonalInfo = ({navigation}) => {
         <View style={styles.cellContainer}>
           <View style={styles.cell}>
             <Text style={styles.cellTitleText}>First Name</Text>
-            <BoldText style={styles.cellChildText}>Robert</BoldText>
+            <BoldText style={styles.cellChildText}>
+              {userData.username}
+            </BoldText>
           </View>
           <View style={styles.cell}>
             <Text style={styles.cellTitleText}>Last Name</Text>
-            <BoldText style={styles.cellChildText}>Chandler</BoldText>
+            <BoldText style={styles.cellChildText}>
+              {userData.lastname}
+            </BoldText>
           </View>
         </View>
         <View style={styles.longCell}>
           <Text style={styles.cellTitleText}>Verified E-mail</Text>
-          <BoldText style={styles.cellChildText}>pewdiepie1@gmail.com</BoldText>
+          <BoldText style={styles.cellChildText}>{userData.email}</BoldText>
         </View>
         <View
           style={[styles.longCell, {display: 'flex', flexDirection: 'row'}]}>
           <View style={styles.phoneText}>
             <Text style={styles.cellTitleText}>Phone Number</Text>
-            <BoldText style={styles.cellChildText}>
-              <Button
-                containerStyle={styles.buttonStyle}
-                titleStyle={styles.addPhoneNumber}
-                type="clear"
-                title="Add phone number"
-                onPress={() => {
-                  navigation.navigate('Add Phone Number');
-                }}
-              />
-            </BoldText>
+            {userData.phone !== null ? (
+              <BoldText style={styles.cellChildText}>
+                <Button
+                  containerStyle={styles.buttonStyle}
+                  titleStyle={styles.addPhoneNumber}
+                  type="clear"
+                  title={userData.phone}
+                />
+              </BoldText>
+            ) : (
+              <BoldText style={styles.cellChildText}>
+                <Button
+                  containerStyle={styles.buttonStyle}
+                  titleStyle={styles.addPhoneNumber}
+                  type="clear"
+                  title="Add Phone Number"
+                  onPress={() => {
+                    navigation.navigate('Add Phone Number');
+                  }}
+                />
+              </BoldText>
+            )}
           </View>
-          <Button
-            containerStyle={styles.buttonStyle}
-            titleStyle={styles.manageText}
-            type="clear"
-            title="Manage"
-            onPress={() => {
-              navigation.navigate('Change Phone Number');
-            }}
-          />
+          {userData.phone !== null ? (
+            <Button
+              containerStyle={styles.buttonStyle}
+              titleStyle={styles.manageText}
+              type="clear"
+              title="Manage"
+              onPress={() => {
+                navigation.navigate('Change Phone Number', {
+                  phone: userData.phone,
+                });
+              }}
+            />
+          ) : null}
         </View>
       </View>
     </>
