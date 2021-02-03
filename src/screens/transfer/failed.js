@@ -6,10 +6,25 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {API_URL} from '@env';
 
-const failed = ({navigation}) => {
+const failed = ({navigation, route}) => {
+  const {
+    amount,
+    balanceLeft,
+    date,
+    time,
+    notes,
+    username,
+    photo_user,
+    phone_user,
+    username_contact,
+    photo_contact,
+    phone_contact,
+  } = route.params;
   return (
     <View style={s.background}>
       <View style={s.header}>
@@ -37,60 +52,69 @@ const failed = ({navigation}) => {
           <View style={s.wrapRow}>
             <View style={s.card1}>
               <Text style={s.headerCard}>Amount</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {amount} </Text>
             </View>
 
             <View style={s.card2}>
               <Text style={s.headerCard}>Balance left</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {balanceLeft} </Text>
             </View>
           </View>
 
           <View style={s.wrapRow}>
             <View style={s.card1}>
               <Text style={s.headerCard}>Date</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {date} </Text>
             </View>
 
             <View style={s.card2}>
               <Text style={s.headerCard}>Time</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {time} </Text>
             </View>
           </View>
 
           <View style={s.card3}>
             <Text style={s.headerCard}>Notes</Text>
-            <Text style={s.contentCard}> Loading </Text>
+            <Text style={s.contentCard}> {notes} </Text>
           </View>
         </View>
 
         <View style={s.fromTO}>
           <Text style={s.headText}>From</Text>
           <View style={s.cardInfo}>
-            <View style={s.userImage}>
+            {photo_user !== null ? (
+              <Image style={s.userImage} source={{uri: API_URL + photo_user}} />
+            ) : (
               <Icons name="account-outline" color="#6379F4" size={50} />
-            </View>
+            )}
             <View style={s.infoContent}>
-              <Text style={s.infoUsername}>...</Text>
-              <Text style={s.infoPhone}>...</Text>
+              <Text style={s.infoUsername}>{username}</Text>
+              <Text style={s.infoPhone}>{phone_user}</Text>
             </View>
           </View>
 
           <Text style={s.headText}>To</Text>
           <View style={s.cardInfo}>
-            <View style={s.userImage}>
+            {photo_contact !== null ? (
+              <Image
+                style={s.userImage}
+                source={{uri: API_URL + photo_contact}}
+              />
+            ) : (
               <Icons name="account-outline" color="#6379F4" size={50} />
-            </View>
+            )}
             <View style={s.infoContent}>
-              <Text style={s.infoUsername}>...</Text>
-              <Text style={s.infoPhone}>...</Text>
+              <Text style={s.infoUsername}>{username_contact}</Text>
+              <Text style={s.infoPhone}>{phone_contact}</Text>
             </View>
           </View>
         </View>
         <View style={s.buttonAct}>
           <TouchableOpacity
             style={s.button}
-            onPress={() => navigation.navigate('pinToTransfer')}>
+            onPress={() =>
+              navigation.navigate('pinToTransfer', {...route.params})
+            }>
             <Text style={s.buttonText}>Try Again</Text>
           </TouchableOpacity>
         </View>

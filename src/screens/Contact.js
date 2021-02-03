@@ -120,7 +120,7 @@ const Contact = ({navigation}) => {
             return (
               <Card
                 key={id_user}
-                id={id_user}
+                id_user={id_user}
                 navigation={navigation}
                 username={username}
                 photo={photo}
