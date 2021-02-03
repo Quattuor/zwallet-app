@@ -3,6 +3,7 @@ import {
   signupUserString,
   createPinString,
   getUserProfile,
+  logoutUserString,
   pending,
   rejected,
   fulfilled,
@@ -76,6 +77,31 @@ const authReducer = (prevState = initialState, action) => {
         isPending: false,
         isFulfilled: true,
         login: action.payload.data,
+        err: {},
+      };
+
+    // case logoutUserString + pending:
+    //   return {
+    //     ...prevState,
+    //     isPending: true,
+    //     isRejected: false,
+    //     isFulfilled: false,
+    //   };
+    // case logoutUserString + rejected:
+    //   return {
+    //     ...prevState,
+    //     isPending: false,
+    //     isRejected: true,
+    //     err: action.payload.data,
+    //     login: {},
+    //   };
+    case logoutUserString:
+      // if(action.payload.data)
+      return {
+        ...prevState,
+        isPending: false,
+        isFulfilled: true,
+        login: {},
         err: {},
       };
 

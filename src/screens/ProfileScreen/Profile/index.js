@@ -9,43 +9,56 @@ import {
   Switch,
   Image,
   Platform,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import userIcon from '../../../assets/icon/user.png';
 import BoldText from '../../../components/CustomText';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {API_URL} from '@env';
 import axios from 'axios';
 import ImagePicker from 'react-native-image-crop-picker';
+import {logoutUser} from '../../../utils/redux/actionCreators/auth';
 
 const ProfileScreen = ({navigation}) => {
-  const token = useSelector((state) => state.auth.login.data.token);
-  console.log('TOKEN', token);
-  const id = useSelector((state) => state.auth.login.data.id);
-  console.log('ID USER', id);
+  // const token = useSelector((state) => state.auth.login.data.token);
+  // console.log('TOKEN', token);
+  // const id = useSelector((state) => state.auth.login.data.id);
+  // console.log('ID USER', id);
+  const getData = useSelector((state) => state.auth.login);
+  const logout = useSelector((state) => state.auth.login);
+  console.log('LOGOUT CHECK', logout);
+
+  const dispatch = useDispatch();
 
   const [value, setValue] = useState(false);
   const [userData, setUserData] = useState({});
   const [photo, setPhoto] = useState([]);
 
-  const config = {
-    headers: {
-      'x-access-token': 'Bearer ' + token,
-    },
-  };
+  // const config = {
+  //   headers: {
+  //     'x-access-token': 'Bearer ' + getData.data.token,
+  //   },
+  // };
 
   console.log('DATAA USER', userData);
   useEffect(() => {
-    axios
-      .get(`${API_URL}/user/${id}`, config)
-      .then(({data}) => {
-        setUserData(data.data[0]);
-      })
-      .catch(({response}) => {
-        console.log(response.data);
-      });
+    if (getData.data) {
+      axios
+        .get(`${API_URL}/user/${getData.data.id}`, {
+          headers: {
+            'x-access-token': 'Bearer ' + getData.data.token,
+          },
+        })
+        .then(({data}) => {
+          setUserData(data.data[0]);
+        })
+        .catch(({response}) => {
+          console.log(response.data);
+        });
+    }
   }, []);
 
   const addPhoto = () => {
@@ -77,16 +90,54 @@ const ProfileScreen = ({navigation}) => {
     }
     console.log('PICTURE', pictureData);
     axios
-      .patch(`${API_URL}/user/img/${id}`, pictureData, config)
+      .patch(`${API_URL}/user/img/${getData.data.id}`, pictureData, {
+        headers: {
+          'x-access-token': 'Bearer ' + getData.data.token,
+        },
+      })
       .then(async ({data}) => {
-        await addPhoto();
-        navigation.reset({
+        await navigation.reset({
           index: 1,
           routes: [{name: 'Home'}, {name: 'Profile'}],
         });
       })
       .catch((err) => {
         console.log('err', err);
+      });
+  };
+
+  const promptLogout = () => {
+    Alert.alert(
+      'Logout?',
+      "You'll be logout from system",
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: Logout},
+      ],
+      {cancelable: true},
+    );
+  };
+
+  const Logout = () => {
+    axios
+      .delete(API_URL + `/auth/logout`, {
+        headers: {
+          'x-access-token': 'Bearer ' + getData.data.token,
+        },
+      })
+      .then(({data}) => {
+        console.log('LOGOUT', data);
+        dispatch(logoutUser());
+        if (data.success) {
+          navigation.navigate('Login');
+        }
+        console.log('LOGOUT289282', logout);
+      })
+      .catch(({response}) => {
+        console.log(response.data);
       });
   };
 
@@ -250,6 +301,7 @@ const ProfileScreen = ({navigation}) => {
               containerStyle={styles.buttonSingleContainer}
               titleStyle={styles.logoutTitleStyle}
               type="clear"
+              onPress={promptLogout}
             />
           </View>
         </View>
