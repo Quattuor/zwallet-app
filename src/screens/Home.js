@@ -114,10 +114,11 @@ class Home extends Component {
 
   render() {
     const {login} = this.props.auth;
-    const {history} = this.props;
+    // const {history} = this.props.history;
     // console.log(login);
+    console.log(this.state.histories);
     const {phone, isModal} = this.state;
-    console.log(history, 'HISTORY 53');
+    // console.log(history, 'HISTORY 53');
 
     return (
       <>
@@ -156,34 +157,8 @@ class Home extends Component {
                     : 'John Doe'}
                 </Text>
               </View>
-            </View>
-            <View style={styles.infoPadd}>
-              <View style={styles.infoArea}>
-                <Text style={styles.subtitle}>Balance</Text>
-                <Text style={styles.balance}>Rp120.000</Text>
-                <Text style={styles.subtitle}>+62 813-9387-7946</Text>
-              </View>
-            </View>
-            <View style={styles.btnList}>
-              <TouchableOpacity
-                style={styles.btnType}
-                onPress={() =>
-                  phone !== null
-                    ? this.props.navigation.navigate('Contact')
-                    : this.setState({isModal: !isModal})
-                }>
-                <IconF name="arrow-up" color="#608DE2" size={21} />
-                <Text style={styles.btnTypeText}>Transfer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnType}
-                onPress={() =>
-                  phone !== null
-                    ? this.props.navigation.navigate('Topup')
-                    : this.setState({isModal: !isModal})
-                }>
-                <IconF name="plus" color="#608DE2" size={21} />
-                <Text style={styles.btnTypeText}>Top Up</Text>
+              <TouchableOpacity style={styles.btnBell}>
+                <IconF name="bell" color="#4D4B57" size={23} />
               </TouchableOpacity>
             </View>
           </View>
