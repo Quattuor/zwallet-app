@@ -4,6 +4,7 @@ import {
   loginUserString,
   createPinString,
   getUserProfile,
+  logoutUserString,
 } from '../actionTypes';
 
 import {API_URL} from '@env';
@@ -19,6 +20,16 @@ export const loginUser = (data) => ({
   type: loginUserString,
   payload: axios.post(API_URL + '/auth/login', data),
 });
+
+export const logoutUser = () => {
+  return {
+    type: logoutUserString,
+    // payload: {
+    //   token: token,
+    //   id: id,
+    // },
+  };
+};
 
 export const createPin = (data) => ({
   type: createPinString,

@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useSelector} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 
 import Home from '../screens/Home';
@@ -32,7 +33,18 @@ import {Alert} from 'react-native';
 const Stack = createStackNavigator();
 
 const MainRouter = () => {
+  const token = useSelector((state) => state.auth.login);
+  const [route, setRoute] = useState(!token.data ? 'Login' : 'Home');
+
+  console.log('ROUTER', token);
   useEffect(() => {
+    if (!token.data) {
+      console.log('TOKEN KOSONG');
+      setRoute('Login');
+    } else {
+      console.log('ADA');
+      setRoute('Home');
+    }
     SplashScreen.hide();
   }, []);
 
@@ -54,7 +66,7 @@ const MainRouter = () => {
   }, [socket]);
 
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName={route}>
       <Stack.Screen
         name="Home"
         component={Home}

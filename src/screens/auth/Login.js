@@ -68,6 +68,12 @@ class Login extends Component {
 
       if (login.data) {
         if (login.data.pin) {
+          this.setState({
+            user: {
+              email: '',
+              pass: '',
+            },
+          });
           navigation.navigate('Home');
         } else {
           navigation.push('Create Pin');
