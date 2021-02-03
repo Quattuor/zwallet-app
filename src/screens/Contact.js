@@ -10,7 +10,8 @@ import {
   StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {bobi, dody, julia, left, mei, rich, susi} from '../assets';
+import {bobi, dody, julia, mei, rich, susi} from '../assets';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Card from '../components/Contact';
 
 const Contact = ({navigation}) => {
@@ -20,7 +21,12 @@ const Contact = ({navigation}) => {
       <View style={styles.header}>
         <View style={styles.sectionHeader}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image source={left} />
+            <Icons
+              name="arrow-left"
+              color="#fff"
+              size={30}
+              style={styles.buttonNav}
+            />
           </TouchableOpacity>
           <Text
             style={{
@@ -65,11 +71,11 @@ const Contact = ({navigation}) => {
         </View>
         <Card
           navigation={navigation}
-          Img={susi}
+          img={susi}
           name="Samuel Suhi"
           phone="+62 813-8492-9994"
         />
-        <Card
+        {/* <Card
           navigation={navigation}
           Img={julia}
           name="Julia Syen"
@@ -98,7 +104,7 @@ const Contact = ({navigation}) => {
           Img={dody}
           name="Dody Besari"
           phone="+62 0812-4334-3561"
-        />
+        /> */}
       </ScrollView>
     </>
   );
@@ -114,7 +120,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   header: {
-    height: 190,
+    height: 200,
     width: '100%',
     backgroundColor: '#6379F4',
     borderBottomLeftRadius: 20,
@@ -128,6 +134,9 @@ const styles = StyleSheet.create({
     marginBottom: 35,
     width: '100%',
     // justifyContent: 'space-between',
+  },
+  buttonNav: {
+    padding: 5,
   },
   formSearch: {
     flexDirection: 'row',

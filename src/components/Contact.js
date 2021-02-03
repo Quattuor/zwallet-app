@@ -1,14 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 
-const Contact = (props) => {
+const Contact = ({navigation, img, name, phone}) => {
   return (
     <View>
-      <TouchableOpacity style={styles.allContacts}>
-        <Image style={styles.imgContact} source={props.Img} />
+      <TouchableOpacity
+        style={styles.allContacts}
+        onPress={() => {
+          navigation.navigate('transfer', {img, name, phone});
+        }}>
+        <Image style={styles.imgContact} source={img} />
         <View style={{marginHorizontal: 15}}>
-          <Text style={styles.textContacts}>{props.name}</Text>
-          <Text style={styles.textPhone}>{props.phone}</Text>
+          <Text style={styles.textContacts}>{name}</Text>
+          <Text style={styles.textPhone}>{phone}</Text>
         </View>
       </TouchableOpacity>
     </View>
