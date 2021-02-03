@@ -26,8 +26,6 @@ import {
   transferSuccess,
   transferFailed,
 } from '../screens/transfer';
-import Contact from '../screens/Contact';
-import History from '../screens/History';
 import {useSocket} from '../utils/context/socketProvider';
 import {Alert} from 'react-native';
 
