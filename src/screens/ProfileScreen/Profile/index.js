@@ -1,10 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Dimensions,
   Text,
   View,
-  TouchableOpacity,
+  // TouchableOpacity,
   ScrollView,
   Switch,
   Image,
@@ -56,10 +57,10 @@ const ProfileScreen = ({navigation}) => {
           setUserData(data.data[0]);
         })
         .catch(({response}) => {
-          console.log(response.data);
+          console.log(response);
         });
     }
-  }, []);
+  }, [getData.data]);
 
   const addPhoto = () => {
     ImagePicker.openPicker({
@@ -123,7 +124,7 @@ const ProfileScreen = ({navigation}) => {
 
   const Logout = () => {
     axios
-      .delete(API_URL + `/auth/logout`, {
+      .delete(API_URL + '/auth/logout', {
         headers: {
           'x-access-token': 'Bearer ' + getData.data.token,
         },
@@ -137,7 +138,7 @@ const ProfileScreen = ({navigation}) => {
         console.log('LOGOUT289282', logout);
       })
       .catch(({response}) => {
-        console.log(response.data);
+        console.log(response);
       });
   };
 
@@ -286,8 +287,8 @@ const ProfileScreen = ({navigation}) => {
                       true: '#6379F4',
                     }}
                     thumbColor={value ? 'white' : 'white'}
-                    onValueChange={(value) => {
-                      setValue(value);
+                    onValueChange={(e) => {
+                      setValue(e);
                     }}
                     value={value}
                   />

@@ -8,9 +8,13 @@ export function useSocket() {
 }
 
 import {API_URL} from '@env';
+import {useSelector} from 'react-redux';
 
-export function SocketProvider({id, children}) {
+export function SocketProvider({children}) {
   const [socket, setSocket] = useState();
+  const id = useSelector((state) =>
+    state.auth.login.data !== undefined ? state.auth.login.data.id : 'guest',
+  );
 
   useEffect(() => {
     const newSocketConnection = io(`${API_URL}`, {
