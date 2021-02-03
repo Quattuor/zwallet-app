@@ -1,15 +1,15 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
-// import {PersistGate} from 'redux-persist/integration/react';
+import {PersistGate} from 'redux-persist/integration/react';
 import {SocketProvider} from './utils/context/socketProvider';
-import {store} from './utils/redux/store';
+import {store, persistor} from './utils/redux/store';
 import MainRouter from './router';
 
 const App = () => {
   return (
     <Provider store={store}>
-      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <PersistGate loading={null} persistor={persistor}>
       <SocketProvider
         id={
           //place id_user here
@@ -19,7 +19,7 @@ const App = () => {
           <MainRouter />
         </NavigationContainer>
       </SocketProvider>
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
   );
 };
