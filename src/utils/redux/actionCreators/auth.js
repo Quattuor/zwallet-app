@@ -8,6 +8,7 @@ import {
 
 import {API_URL} from '@env';
 // const API_URL = '192.168.1.10:2005';
+console.log(API_URL);
 
 export const signupUser = (data) => ({
   type: signupUserString,

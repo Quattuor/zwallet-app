@@ -52,7 +52,7 @@ const Contact = ({navigation}) => {
         setContact(data.data);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 

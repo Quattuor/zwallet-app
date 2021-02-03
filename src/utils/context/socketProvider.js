@@ -7,11 +7,13 @@ export function useSocket() {
   return useContext(SocketContext);
 }
 
+import {API_URL} from '@env';
+
 export function SocketProvider({id, children}) {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const newSocketConnection = io('http://192.168.1.11:1010', {
+    const newSocketConnection = io(`${API_URL}`, {
       query: {id},
     });
     setSocket(newSocketConnection);

@@ -10,15 +10,15 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-      <SocketProvider
-        id={
-          //place id_user here
-          22
-        }>
-        <NavigationContainer>
-          <MainRouter />
-        </NavigationContainer>
-      </SocketProvider>
+        <SocketProvider
+          id={
+            //place id_user here
+            22
+          }>
+          <NavigationContainer>
+            <MainRouter />
+          </NavigationContainer>
+        </SocketProvider>
       </PersistGate>
     </Provider>
   );
