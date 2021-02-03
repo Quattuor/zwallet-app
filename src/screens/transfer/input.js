@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +19,20 @@ const input = ({navigation}) => {
   const [focus, setfocus] = useState(false);
   const [amount, setamount] = useState('');
   const [notes, setnotes] = useState('');
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+    };
+  }, []);
+
+  const _keyboardDidHide = () => {
+    setfocus(false);
+  };
+
   return (
     <View style={s.background}>
       <View style={s.header}>
@@ -53,7 +68,7 @@ const input = ({navigation}) => {
         <View style={s.wrapAmount}>
           <TextInput
             keyboardType={'number-pad'}
-            placeholder={focus === false ? '0.00' : ''}
+            placeholder={'0.00'}
             placeholderTextColor="#B5BDCC"
             style={s.inputAmount}
             defaultValue={
