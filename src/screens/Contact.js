@@ -10,7 +10,8 @@ import {
   StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {bobi, dody, julia, left, mei, rich, susi} from '../assets';
+import {bobi, dody, julia, mei, rich, susi} from '../assets';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Card from '../components/Contact';
 
 const Contact = ({navigation}) => {
@@ -20,7 +21,12 @@ const Contact = ({navigation}) => {
       <View style={styles.header}>
         <View style={styles.sectionHeader}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image source={left} />
+            <Icons
+              name="arrow-left"
+              color="#fff"
+              size={30}
+              style={styles.buttonNav}
+            />
           </TouchableOpacity>
           <Text
             style={{
@@ -114,7 +120,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   header: {
-    height: 218,
+    height: 200,
     width: '100%',
     backgroundColor: '#6379F4',
     borderBottomLeftRadius: 20,
@@ -129,6 +135,9 @@ const styles = StyleSheet.create({
     width: '100%',
     // justifyContent: 'space-between',
   },
+  buttonNav: {
+    padding: 5,
+  },
   formSearch: {
     flexDirection: 'row',
     marginHorizontal: 15,
@@ -136,7 +145,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     marginBottom: 25,
-    marginTop: 40,
+    marginTop: 10,
   },
   card: {
     width: 110,
