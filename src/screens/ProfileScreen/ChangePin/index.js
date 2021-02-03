@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,75 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import SmoothPinCode from 'react-native-smooth-pincode-input';
+import {useSelector} from 'react-redux';
+import {API_URL} from '@env';
+import axios from 'axios';
 
-const ChangePin = () => {
+const ChangePin = ({navigation}) => {
   const [code, setCode] = useState('');
+  const [isMatched, setIsMatched] = useState(false);
+
+  const token = useSelector((state) => state.auth.login.data.token);
+  const pin = useSelector((state) => state.auth.login.data.pin);
+
   const filled = () => {
     if (code.length === 6) {
       return true;
     } else {
       return false;
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!isMatched) {
+      if (code.length !== 6) {
+        ToastAndroid.show(
+          'Panjang PIN harus sama dengan 6',
+          ToastAndroid.SHORT,
+        );
+      } else {
+        const config = {
+          headers: {
+            'x-access-token': 'bearer ' + token,
+          },
+        };
+        axios
+          .get(API_URL + `/user/PIN/${code}`, config)
+          .then(({data}) => {
+            setIsMatched(true);
+            setCode('');
+          })
+          .catch(({response}) => {
+            if (response.status === 400) {
+              ToastAndroid.show(
+                'Pin yang anda masukkan salah',
+                ToastAndroid.SHORT,
+              );
+            }
+            console.log(response.data);
+          });
+      }
+    } else {
+      const config = {
+        headers: {
+          'x-access-token': 'bearer ' + token,
+        },
+      };
+      const dataPIN = {
+        PIN: code,
+      };
+      axios
+        .patch(API_URL + `/user/PIN/new`, dataPIN, config)
+        .then(({data}) => {
+          ToastAndroid.show(data.message, ToastAndroid.SHORT);
+          navigation.replace('Profile');
+        })
+        .catch(({response}) => {
+          console.log(response.data);
+        });
     }
   };
 
@@ -33,8 +92,9 @@ const ChangePin = () => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.textTitle}>
           <Text style={styles.subTitle}>
-            Enter your current 6 digits Zwallet PIN below to continue to the
-            next steps.
+            {isMatched
+              ? 'Type your new 6 digits security PIN to use in Zwallet.'
+              : 'Enter your current 6 digits Zwallet PIN below to continue to the next steps.'}
           </Text>
         </View>
         <View style={styles.formPin}>
@@ -50,7 +110,9 @@ const ChangePin = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-        <TouchableOpacity style={!filled() ? styles.btn : styles.btnActive}>
+        <TouchableOpacity
+          style={!filled() ? styles.btn : styles.btnActive}
+          onPress={code.length === 6 ? handleSubmit : null}>
           <Text style={!filled() ? styles.continue : styles.continueActive}>
             Continue
           </Text>

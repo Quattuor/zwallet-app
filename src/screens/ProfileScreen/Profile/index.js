@@ -37,28 +37,25 @@ const ProfileScreen = ({navigation}) => {
   const [userData, setUserData] = useState({});
   const [photo, setPhoto] = useState([]);
 
-  // const config = {
-  //   headers: {
-  //     'x-access-token': 'Bearer ' + getData.data.token,
-  //   },
-  // };
-
   console.log('DATAA USER', userData);
   useEffect(() => {
-    if (getData.data) {
-      axios
-        .get(`${API_URL}/user/${getData.data.id}`, {
-          headers: {
-            'x-access-token': 'Bearer ' + getData.data.token,
-          },
-        })
-        .then(({data}) => {
-          setUserData(data.data[0]);
-        })
-        .catch(({response}) => {
-          console.log(response.data);
-        });
-    }
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (getData.data) {
+        axios
+          .get(`${API_URL}/user/${getData.data.id}`, {
+            headers: {
+              'x-access-token': 'Bearer ' + getData.data.token,
+            },
+          })
+          .then(({data}) => {
+            setUserData(data.data[0]);
+          })
+          .catch(({response}) => {
+            console.log(response.data);
+          });
+      }
+    });
+    return unsubscribe;
   }, []);
 
   const addPhoto = () => {

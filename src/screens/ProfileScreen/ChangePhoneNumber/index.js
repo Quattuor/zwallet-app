@@ -1,8 +1,26 @@
 import React from 'react';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {StyleSheet, Text, View, Dimensions, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
-const ChangePhoneNumber = () => {
+const ChangePhoneNumber = ({navigation, route}) => {
+  const {phone} = route.params;
+  console.log('PHONE', phone);
+
+  const deletePhone = () => {
+    Alert.alert(
+      'Warning!',
+      'Are you sure to delete your phone number ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => navigation.replace('Add Phone Number')},
+      ],
+      {cancelable: true},
+    );
+  };
+
   return (
     <>
       <Text style={styles.subHeaderText}>
@@ -12,9 +30,15 @@ const ChangePhoneNumber = () => {
       <View style={[styles.longCell, {display: 'flex', flexDirection: 'row'}]}>
         <View style={styles.phoneText}>
           <Text style={styles.cellTitleText}>Primary</Text>
-          <Text style={styles.cellChildText}>+62 813 9387 7946</Text>
+          <Text style={styles.cellChildText}>{phone}</Text>
         </View>
-        <Icon name="trash" size={30} color="#BBBBBE" style={styles.trashIcon} />
+        <Icon
+          name="trash"
+          size={30}
+          color="#BBBBBE"
+          style={styles.trashIcon}
+          onPress={deletePhone}
+        />
       </View>
     </>
   );

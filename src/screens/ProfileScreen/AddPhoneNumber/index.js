@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,18 +8,62 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import {Input} from 'react-native-elements';
+import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
+import {API_URL} from '@env';
+import axios from 'axios';
 
-const AddPhoneNumber = () => {
+const AddPhoneNumber = ({navigation}) => {
+  const token = useSelector((state) => state.auth.login.data.token);
+  const id = useSelector((state) => state.auth.login.data.id);
+
   const [number, setNumber] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   const filled = () => {
-    if (number.length === 12) {
+    if (number === '') {
       return true;
     } else {
       return false;
+    }
+  };
+
+  const handleSubmit = () => {
+    const testNumber = /^(^\+62|62|^08)(\d{3,4}-?){2}\d{3,4}$/;
+    if (!filled()) {
+      if (testNumber.test(number)) {
+        const config = {
+          headers: {
+            'x-access-token': 'bearer ' + token,
+          },
+        };
+        const updatePhone = {
+          phone: number,
+        };
+        axios
+          .patch(`${API_URL}/user/${id}`, updatePhone, config)
+          .then(({data}) => {
+            ToastAndroid.show(data.message, ToastAndroid.SHORT);
+            navigation.replace('Profile');
+          })
+          .catch(({response}) => {
+            if (response.status === 401) {
+              ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            }
+            console.log(response.data);
+          });
+      } else if (number.length < 11) {
+        setErrMsg('Format no telepon Min.11');
+      } else if (number.length > 12) {
+        setErrMsg('Format no telepon Maks.12');
+      } else {
+        setErrMsg('Format number salah !');
+      }
+    } else {
+      setErrMsg('Kolom tidak boleh kosong !');
     }
   };
 
@@ -42,21 +86,30 @@ const AddPhoneNumber = () => {
         <View style={styles.formPin}>
           <Input
             value={number}
-            onChangeText={(number) => setNumber(number)}
+            onChangeText={(num) => setNumber(num)}
             editable={true}
-            leftIcon={<Icon name="phone" color="#6379F4" size={20} />}
+            leftIcon={
+              <Icon
+                name="phone"
+                color={number === '' ? '#878787' : '#6379F4'}
+                size={20}
+              />
+            }
             placeholder="Enter your phone number"
             inputContainerStyle={[styles.inputContainerStyle, {marginTop: 53}]}
             inputStyle={styles.inputStyle}
             keyboardType="phone-pad"
           />
+          <Text style={{color: 'red', fontWeight: 'bold'}}>{errMsg}</Text>
         </View>
       </ScrollView>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-        <TouchableOpacity style={!filled() ? styles.btn : styles.btnActive}>
-          <Text style={!filled() ? styles.continue : styles.continueActive}>
+        <TouchableOpacity
+          style={filled() ? styles.btn : styles.btnActive}
+          onPress={handleSubmit}>
+          <Text style={filled() ? styles.continue : styles.continueActive}>
             Submit
           </Text>
         </TouchableOpacity>
