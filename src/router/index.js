@@ -37,17 +37,17 @@ const MainRouter = () => {
   const token = useSelector((state) => state.auth.login);
   const [route, setRoute] = useState(!token.data ? 'Login' : 'Home');
 
-  console.log('ROUTER', token);
+  // console.log('ROUTER', token);
   useEffect(() => {
     if (!token.data) {
-      console.log('TOKEN KOSONG');
+      // console.log('TOKEN KOSONG');
       setRoute('Login');
     } else {
-      console.log('ADA');
+      // console.log('ADA');
       setRoute('Home');
     }
     SplashScreen.hide();
-  }, []);
+  }, [token.data]);
 
   const socket = useSocket();
 

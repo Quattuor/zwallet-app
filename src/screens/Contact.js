@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,11 +7,10 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Image,
   StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {bobi, dody, julia, mei, rich, susi} from '../assets';
+// import {bobi, dody, julia, mei, rich, susi} from '../assets';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Card from '../components/Contact';
 import axios from 'axios';
@@ -22,24 +21,24 @@ const Contact = ({navigation}) => {
   const [receiver, setContact] = useState([]);
   const [searchPhone, setSearchPhone] = useState('');
   const token = useSelector((state) => state.auth.login.data.token);
-  const id_user = useSelector((state) => state.auth.login.data.id);
+  const id = useSelector((state) => state.auth.login.data.id);
 
-  const listContact = () => {
+  const listContact = useCallback(() => {
     const config = {
       headers: {
         'x-access-token': 'Bearer ' + token,
       },
     };
     axios
-      .get(`${API_URL}/contact/${id_user}`, config)
+      .get(`${API_URL}/contact/${id}`, config)
       .then(({data}) => {
-        console.log('Sukses');
         setContact(data.data);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
       });
-  };
+  }, [token, id]);
+
   const handleSearch = () => {
     const config = {
       headers: {
@@ -58,9 +57,7 @@ const Contact = ({navigation}) => {
 
   useEffect(() => {
     listContact();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  console.log(receiver);
+  }, [listContact]);
 
   return (
     <>
@@ -98,6 +95,7 @@ const Contact = ({navigation}) => {
             style={{width: '100%'}}
             placeholder="Search receiver here"
             onChangeText={(text) => setSearchPhone(text)}
+            onEndEditing={handleSearch}
           />
         </View>
       </View>
@@ -130,36 +128,6 @@ const Contact = ({navigation}) => {
               />
             );
           })}
-        {/* <Card
-          navigation={navigation}
-          Img={julia}
-          name="Julia Syen"
-          phone="+62 812-3942-3656"
-        />
-        <Card
-          navigation={navigation}
-          Img={bobi}
-          name="Bobi Sammy"
-          phone="+62 813-5982-2940"
-        />
-        <Card
-          navigation={navigation}
-          Img={rich}
-          name="Juliana Rich"
-          phone="+62 811-6212-5663"
-        />
-        <Card
-          navigation={navigation}
-          Img={mei}
-          name="Michi Mei"
-          phone="+62 813-3891-3838"
-        />
-        <Card
-          navigation={navigation}
-          Img={dody}
-          name="Dody Besari"
-          phone="+62 0812-4334-3561"
-        /> */}
       </ScrollView>
     </>
   );

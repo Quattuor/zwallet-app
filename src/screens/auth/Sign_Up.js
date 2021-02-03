@@ -124,7 +124,7 @@ class Sign_Up extends Component {
           />
           <Text style={styles.error}>{this.state.error}</Text>
           <ButtonAuth
-            title="Login"
+            title="Sign Up"
             disabled={this.state.pending || this.state.disabled}
             onPress={this.onSubmit}
           />
@@ -132,8 +132,10 @@ class Sign_Up extends Component {
             <Text style={styles.signUpText1}>
               Already have an account? Let’s
             </Text>
-            <TouchableOpacity style={styles.signUpBtn}>
-              <Text style={styles.signUpText2}>Sign Up</Text>
+            <TouchableOpacity
+              style={styles.signUpBtn}
+              onPress={() => this.props.navigation.push('Login')}>
+              <Text style={styles.signUpText2}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,6 +1,7 @@
-import React, {useState, Component} from 'react';
+/* eslint-disable react/no-did-mount-set-state */
+import React, {Component} from 'react';
 import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import {loginUser} from '../../utils/redux/actionCreators/auth';
 
@@ -19,6 +20,14 @@ class Login extends Component {
     },
     pending: false,
   };
+  componentDidMount() {
+    this.setState({
+      user: {
+        email: '',
+        pass: '',
+      },
+    });
+  }
 
   changeValue = (name, value) => {
     this.setState({
@@ -68,12 +77,6 @@ class Login extends Component {
 
       if (login.data) {
         if (login.data.pin) {
-          this.setState({
-            user: {
-              email: '',
-              pass: '',
-            },
-          });
           navigation.navigate('Home');
         } else {
           navigation.push('Create Pin');
@@ -114,10 +117,12 @@ class Login extends Component {
             secure={true}
             error={this.state.error}
           />
-          <TouchableOpacity
-            onPress={() => this.props.navigation.push('Forgot Pass')}
-            style={styles.btnForgotPass}>
-            <Text style={styles.forgotPass}>Forgot Password?</Text>
+          <TouchableOpacity style={styles.btnForgotPass}>
+            <Text
+              style={styles.forgotPass}
+              onPress={() => this.props.navigation.push('Forgot Pass')}>
+              Forgot Password?
+            </Text>
           </TouchableOpacity>
           <Text style={styles.error}>{this.state.error}</Text>
           <ButtonAuth

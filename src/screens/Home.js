@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
   Text,
@@ -5,9 +6,10 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
-  StyleSheet,
-  StatusBar,
+  Dimensions,
+  // Button,
+  // StyleSheet,
+  // StatusBar,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -22,10 +24,68 @@ import Photo from '../assets/images/profile.png';
 import styles from '../styles/homeStyles';
 import {API_URL} from '@env';
 
+const Modal = ({hide, navigation}) => {
+  const {height, width} = Dimensions.get('window');
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        zIndex: 1,
+        top: 0,
+        width: width,
+        height: height,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <TouchableOpacity
+        onPress={hide}
+        style={{backgroundColor: '#00000090', width: '100%', height: '100%'}}
+      />
+
+      <View
+        style={{
+          backgroundColor: '#fff',
+          elevation: 5,
+          width: '70%',
+          position: 'absolute',
+          zIndex: 1,
+          borderRadius: 14,
+          alignItems: 'center',
+          paddingVertical: 18,
+        }}>
+        <Text style={{fontSize: 18, marginBottom: 10}}>
+          Phone Number Doesn't Exist
+        </Text>
+        <Text style={{paddingHorizontal: 30, textAlign: 'center'}}>
+          {'tap the profile photo at the top \nto add a phone number \n\nor'}
+        </Text>
+        <TouchableOpacity
+          onPress={navigation}
+          style={{backgroundColor: '#6379F4', marginTop: 10, borderRadius: 10}}>
+          <Text
+            style={{
+              color: '#fff',
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              fontSize: 15,
+            }}>
+            Click Me
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 class Home extends Component {
-  state = {
-    histories: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      phone: props.auth.login.data.phone,
+      isModal: false,
+      histories: [],
+    };
+  }
   getHistory = async () => {
     const {
       dispatch,
@@ -56,102 +116,149 @@ class Home extends Component {
     const {login} = this.props.auth;
     const {history} = this.props;
     // console.log(login);
+    const {phone, isModal} = this.state;
     console.log(history, 'HISTORY 53');
+
     return (
-      <ScrollView style={styles.container}>
+      <>
         <MyStatusBar />
-        <View style={styles.topArea}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Profile')}>
-            <Image source={Photo} style={styles.photo} />
-          </TouchableOpacity>
-          <View style={styles.nameArea}>
-            <View style={styles.titleArea}>
-              <Text style={styles.hello}>Hello,</Text>
-              <Text style={styles.name}>
-                {login.data
-                  ? login.data.username && login.data.lastname
-                    ? login.data.username + ' ' + login.data.lastname
-                    : login.data.username
-                  : 'John Doe'}
+        <ScrollView
+          style={styles.container}
+          scrollEnabled={isModal ? false : true}>
+          {isModal && (
+            <Modal
+              hide={() => {
+                this.setState({
+                  isModal: !isModal,
+                });
+              }}
+              navigation={() => {
+                this.setState({
+                  isModal: !isModal,
+                });
+                this.props.navigation.navigate('Add Phone Number');
+              }}
+            />
+          )}
+          <View style={styles.topArea}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Profile')}>
+              <Image source={Photo} style={styles.photo} />
+            </TouchableOpacity>
+            <View style={styles.nameArea}>
+              <View style={styles.titleArea}>
+                <Text style={styles.hello}>Hello,</Text>
+                <Text style={styles.name}>
+                  {login.data
+                    ? login.data.username && login.data.lastname
+                      ? login.data.username + ' ' + login.data.lastname
+                      : login.data.username
+                    : 'John Doe'}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.infoPadd}>
+              <View style={styles.infoArea}>
+                <Text style={styles.subtitle}>Balance</Text>
+                <Text style={styles.balance}>Rp120.000</Text>
+                <Text style={styles.subtitle}>+62 813-9387-7946</Text>
+              </View>
+            </View>
+            <View style={styles.btnList}>
+              <TouchableOpacity
+                style={styles.btnType}
+                onPress={() =>
+                  phone !== null
+                    ? this.props.navigation.navigate('Contact')
+                    : this.setState({isModal: !isModal})
+                }>
+                <IconF name="arrow-up" color="#608DE2" size={21} />
+                <Text style={styles.btnTypeText}>Transfer</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btnType}
+                onPress={() =>
+                  phone !== null
+                    ? this.props.navigation.navigate('Topup')
+                    : this.setState({isModal: !isModal})
+                }>
+                <IconF name="plus" color="#608DE2" size={21} />
+                <Text style={styles.btnTypeText}>Top Up</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.infoPadd}>
+            <View style={styles.infoArea}>
+              <Text style={styles.subtitle}>Balance</Text>
+              <Text style={styles.balance}>
+                {login.data && login.data.balance
+                  ? 'Rp.' + login.data.balance
+                  : 'Rp.0'}
+              </Text>
+              <Text style={styles.subtitle}>
+                {login.data && login.data.phone
+                  ? login.data.phone
+                  : 'Please add phone first'}
               </Text>
             </View>
-            <TouchableOpacity style={styles.btnBell}>
-              <IconF name="bell" color="#4D4B57" size={23} />
+          </View>
+          <View style={styles.btnList}>
+            <TouchableOpacity style={styles.btnType}>
+              <IconF name="arrow-up" color="#608DE2" size={21} />
+              <Text
+                style={styles.btnTypeText}
+                onPress={() => this.props.navigation.navigate('Contact')}>
+                Transfer
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnType}>
+              <IconF name="plus" color="#608DE2" size={21} />
+              <Text style={styles.btnTypeText}>Top Up</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.infoPadd}>
-          <View style={styles.infoArea}>
-            <Text style={styles.subtitle}>Balance</Text>
-            <Text style={styles.balance}>
-              {login.data && login.data.balance
-                ? 'Rp.' + login.data.balance
-                : 'Rp.0'}
-            </Text>
-            <Text style={styles.subtitle}>
-              {login.data && login.data.phone
-                ? login.data.phone
-                : 'Please add phone first'}
-            </Text>
+          <View style={styles.rowText}>
+            <Text style={styles.btnTypeText}>Transaction History</Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('History')}>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.btnList}>
-          <TouchableOpacity style={styles.btnType}>
-            <IconF name="arrow-up" color="#608DE2" size={21} />
-            <Text
-              style={styles.btnTypeText}
-              onPress={() => this.props.navigation.navigate('Contact')}>
-              Transfer
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnType}>
-            <IconF name="plus" color="#608DE2" size={21} />
-            <Text style={styles.btnTypeText}>Top Up</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.rowText}>
-          <Text style={styles.btnTypeText}>Transaction History</Text>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('History')}>
-            <Text style={styles.seeAll}>See all</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.cardList}>
-          {this.state.histories &&
-            this.state.histories.map((item, i) => {
-              // console.log(new Date(item.createdAt).getTime());
-              console.log(API_URL + item.image);
-              return (
-                <TouchableOpacity key={i}>
-                  <View style={styles.cardBox}>
-                    <Image
-                      source={{uri: API_URL + item.image}}
-                      style={styles.photo}
-                    />
-                    <View style={styles.nameArea}>
-                      <View>
-                        <Text style={styles.cardTitle}>
-                          {item.name ? item.name : item.first_name}
+          <View style={styles.cardList}>
+            {this.state.histories &&
+              this.state.histories.map((item, i) => {
+                // console.log(new Date(item.createdAt).getTime());
+                console.log(API_URL + item.image);
+                return (
+                  <TouchableOpacity key={i}>
+                    <View style={styles.cardBox}>
+                      <Image
+                        source={{uri: API_URL + item.image}}
+                        style={styles.photo}
+                      />
+                      <View style={styles.nameArea}>
+                        <View>
+                          <Text style={styles.cardTitle}>
+                            {item.name ? item.name : item.first_name}
+                          </Text>
+                          <Text style={styles.cardSub}>Transfer</Text>
+                        </View>
+                        <Text
+                          style={
+                            item.type === 'Top Up'
+                              ? styles.cardType1
+                              : styles.cardType2
+                          }>
+                          {' '}
+                          {item.type === 'Top Up' ? '+' : '-'}Rp.{item.balance}
                         </Text>
-                        <Text style={styles.cardSub}>Transfer</Text>
                       </View>
-                      <Text
-                        style={
-                          item.type === 'Top Up'
-                            ? styles.cardType1
-                            : styles.cardType2
-                        }>
-                        {' '}
-                        {item.type === 'Top Up' ? '+' : '-'}Rp.{item.balance}
-                      </Text>
                     </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-        </View>
-      </ScrollView>
+                  </TouchableOpacity>
+                );
+              })}
+          </View>
+        </ScrollView>
+      </>
     );
   }
 }

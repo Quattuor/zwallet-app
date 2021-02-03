@@ -10,11 +10,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SocketProvider
-          id={
-            //place id_user here
-            22
-          }>
+        <SocketProvider>
           <NavigationContainer>
             <MainRouter />
           </NavigationContainer>
