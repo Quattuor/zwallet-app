@@ -71,11 +71,11 @@ const Contact = ({navigation}) => {
         </View>
         <Card
           navigation={navigation}
-          Img={susi}
+          img={susi}
           name="Samuel Suhi"
           phone="+62 813-8492-9994"
         />
-        <Card
+        {/* <Card
           navigation={navigation}
           Img={julia}
           name="Julia Syen"
@@ -104,7 +104,7 @@ const Contact = ({navigation}) => {
           Img={dody}
           name="Dody Besari"
           phone="+62 0812-4334-3561"
-        />
+        /> */}
       </ScrollView>
     </>
   );
