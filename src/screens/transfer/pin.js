@@ -16,7 +16,8 @@ import SmoothPinCode from 'react-native-smooth-pincode-input';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import {API_URL} from '@env';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {getUser} from '../../utils/redux/actionCreators/auth';
 
 const ChangePin = ({navigation, route}) => {
   const [code, setCode] = useState('');
@@ -34,6 +35,7 @@ const ChangePin = ({navigation, route}) => {
   const photo = useSelector((state) => state.auth.login.data.photo);
   const username = useSelector((state) => state.auth.login.data.username);
   const phone = useSelector((state) => state.auth.login.data.phone);
+  const dispatch = useDispatch();
 
   const checkPin = () => {
     const config = {
@@ -49,7 +51,8 @@ const ChangePin = ({navigation, route}) => {
     };
     axios
       .get(`${API_URL}/user/PIN/${code}`, config)
-      .then(() => {
+      .then(async () => {
+        dispatch(getUser(id));
         axios
           .post(`${API_URL}/history/transfer`, payload)
           .then(() => {

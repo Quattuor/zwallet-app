@@ -16,7 +16,7 @@ const persistConfig = {
 
 const logger = createLogger();
 
-const enchancers = applyMiddleware(promiseMiddleware, logger);
+const enchancers = applyMiddleware(promiseMiddleware); //logger
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
