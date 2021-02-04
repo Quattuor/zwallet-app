@@ -80,30 +80,6 @@ const authReducer = (prevState = initialState, action) => {
         err: {},
       };
 
-    case getUserProfile + pending:
-      return {
-        ...prevState,
-        isPending: true,
-        isRejected: false,
-        isFulfilled: false,
-      };
-    case getUserProfile + rejected:
-      return {
-        ...prevState,
-        isPending: false,
-        isRejected: true,
-        err: action.payload.data,
-        login: {},
-      };
-    case getUserProfile + fulfilled:
-      return {
-        ...prevState,
-        isPending: false,
-        isFulfilled: true,
-        login: {...prevState.login.data, ...action.payload.data},
-        err: {},
-      };
-
     // case logoutUserString + pending:
     //   return {
     //     ...prevState,
