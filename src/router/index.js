@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -28,14 +28,40 @@ import {
   transferFailed,
 } from '../screens/transfer';
 import {useSocket} from '../utils/context/socketProvider';
-import {Alert} from 'react-native';
+// import {Alert} from 'react-native';
 import Otp from '../screens/auth/Otp';
+import PushNotification from 'react-native-push-notification';
+import {showNotification} from '../notif';
+import {
+  userTransaction,
+  userSubscribe,
+  setHistory,
+} from '../utils/redux/actionCreators/history';
+import {getUser} from '../utils/redux/actionCreators/auth';
+import {connect} from 'react-redux';
 
 const Stack = createStackNavigator();
 
-const MainRouter = () => {
+const MainRouter = (props) => {
   const token = useSelector((state) => state.auth.login);
   const [route, setRoute] = useState(!token.data ? 'Login' : 'Home');
+
+  useEffect(() => {
+    PushNotification.createChannel(
+      {
+        channelId: 'notif',
+        channelName: 'My Notification channel',
+        channelDescription: 'A channel to categories your notification',
+        soundName: 'default',
+        importance: 4,
+        vibrate: true,
+      },
+      (created) => console.log(`createchannel returned '${created}'`),
+    );
+    PushNotification.getChannels((channel_ids) => {
+      console.log(channel_ids);
+    });
+  }, []);
 
   // console.log('ROUTER', token);
   useEffect(() => {
@@ -51,20 +77,58 @@ const MainRouter = () => {
 
   const socket = useSocket();
 
+  const getHistory = useCallback(async () => {
+    const {
+      dispatch,
+      auth: {login},
+    } = props;
+
+    await dispatch(userTransaction(login.data.id));
+    await dispatch(userSubscribe(login.data.id));
+    const {users, instance} = props.history;
+
+    const histories = [...users.data, ...instance.data];
+    const sort = histories.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime(),
+    );
+    // const sort = histories.sort((a, b) => b.createdAt - a.createdAt);
+    await dispatch(setHistory(sort));
+  }, [props]);
+
   useEffect(() => {
+    const {
+      dispatch,
+      auth: {login},
+    } = props;
+    const channel = 'notif';
     if (socket === undefined) {
       return;
     }
     socket.on('connect', () => {
       socket.on('topup', ({title, message}) => {
-        //local notification
-        Alert.alert(title, message);
+        // let wall = 0;
+        // wall += 1;
+        // console.log(wall);
+        // if (wall === 2) {
+        showNotification(title, message, channel);
+        console.log(login.data.id);
+        dispatch(getUser(login.data.id));
+        getHistory();
+        // console.log('ini main router', login.data.id);
+        // Alert.alert(title, message);
         console.log(message);
       });
-      // socket.on('transaction')
+      socket.on('transaction', ({title, message}) => {
+        showNotification(title, message, channel);
+        dispatch(getUser(login.data.id));
+        getHistory();
+        // Alert.alert(title, message);
+        console.log(message);
+      });
     });
     return () => socket.off('connect');
-  }, [socket]);
+  }, [socket, getHistory, props]);
 
   return (
     <Stack.Navigator initialRouteName={route}>
@@ -232,4 +296,9 @@ const MainRouter = () => {
   );
 };
 
-export default MainRouter;
+const mapsStateToProps = ({auth, history}) => ({
+  auth,
+  history,
+});
+
+export default connect(mapsStateToProps)(MainRouter);

@@ -77,7 +77,10 @@ class Login extends Component {
 
       if (login.data) {
         if (login.data.pin) {
-          navigation.navigate('Home');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Home'}],
+          });
         } else {
           navigation.push('Create Pin');
         }

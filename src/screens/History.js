@@ -49,10 +49,10 @@ const History = ({navigation}) => {
   // const minDate = new Date(); // Today
   // const maxDate = new Date(2017, 6, 3);
 
-  console.log('start date', startDatePick);
-  console.log('end date', endDatePick);
+  // console.log('start date', startDatePick);
+  // console.log('end date', endDatePick);
 
-  console.log('start date type', typeof startDatePick);
+  // console.log('start date type', typeof startDatePick);
 
   return (
     <View style={styles.container}>

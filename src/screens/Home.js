@@ -116,7 +116,7 @@ class Home extends Component {
     const {login} = this.props.auth;
     // const {history} = this.props.history;
     // console.log(login);
-    console.log(this.state.histories);
+    // console.log(this.state.histories);
     const {phone, isModal} = this.state;
     // console.log(history, 'HISTORY 53');
 
@@ -178,15 +178,23 @@ class Home extends Component {
             </View>
           </View>
           <View style={styles.btnList}>
-            <TouchableOpacity style={styles.btnType}>
+            <TouchableOpacity
+              style={styles.btnType}
+              onPress={() =>
+                phone !== null
+                  ? this.props.navigation.navigate('Contact')
+                  : this.setState({isModal: !isModal})
+              }>
               <IconF name="arrow-up" color="#608DE2" size={21} />
-              <Text
-                style={styles.btnTypeText}
-                onPress={() => this.props.navigation.navigate('Contact')}>
-                Transfer
-              </Text>
+              <Text style={styles.btnTypeText}>Transfer</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnType}>
+            <TouchableOpacity
+              style={styles.btnType}
+              onPress={() =>
+                phone !== null
+                  ? this.props.navigation.navigate('Topup')
+                  : this.setState({isModal: !isModal})
+              }>
               <IconF name="plus" color="#608DE2" size={21} />
               <Text style={styles.btnTypeText}>Top Up</Text>
             </TouchableOpacity>
@@ -202,7 +210,8 @@ class Home extends Component {
             {this.state.histories &&
               this.state.histories.map((item, i) => {
                 // console.log(new Date(item.createdAt).getTime());
-                console.log(API_URL + item.image);
+                // console.log(API_URL + item.image);
+                // console.log(item.type);
                 return (
                   <TouchableOpacity key={i}>
                     <View style={styles.cardBox}>
@@ -219,12 +228,15 @@ class Home extends Component {
                         </View>
                         <Text
                           style={
-                            item.type === 'Top Up'
+                            item.type === 'Top up' || item.type === 'Received'
                               ? styles.cardType1
                               : styles.cardType2
                           }>
                           {' '}
-                          {item.type === 'Top Up' ? '+' : '-'}Rp.{item.balance}
+                          {item.type === 'Top up' || item.type === 'Received'
+                            ? '+'
+                            : '-'}
+                          Rp.{item.balance}
                         </Text>
                       </View>
                     </View>

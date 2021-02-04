@@ -50,10 +50,10 @@ const ChangePassword = ({navigation}) => {
             newpass: pass2,
           };
           axios
-            .patch(API_URL + `/user/pw/new`, updatePassword, config)
+            .patch(API_URL + '/user/pw/new', updatePassword, config)
             .then(({data}) => {
               ToastAndroid.show(data.message, ToastAndroid.SHORT);
-              console.log('PASSWORD', data);
+              // console.log('PASSWORD', data);
               navigation.replace('Profile');
             })
             .catch(({response}) => {
