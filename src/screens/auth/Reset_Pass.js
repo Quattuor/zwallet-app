@@ -52,7 +52,7 @@ const Reset_Pass = ({route}) => {
           }
 
           if (data.data) {
-            navigation.navigate('Home');
+            navigation.navigate('Login');
             setUser({pass1: '', pass2: ''});
           }
         })

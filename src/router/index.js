@@ -113,6 +113,7 @@ const MainRouter = (props) => {
         // if (wall === 2) {
         showNotification(title, message, channel);
         console.log(login.data.id);
+        console.log(login);
         dispatch(getUser(login.data.id));
         getHistory();
         // console.log('ini main router', login.data.id);
