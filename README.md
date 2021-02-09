@@ -6,12 +6,12 @@
 ## Contents
 
 - [Description](#description)
-- [Screenshoots](#screenshoots)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [ENV](#ENV)
 - [Usage](#Usage)
+- [Screenshoots](#screenshoots)
 - [Demo](#demo)
 - [Related Project](#related-project)
 - [License](#license)
@@ -19,14 +19,6 @@
 ## Description
 
 **Zwallet** Application that focussing in banking needs for all users in the world. Always updated and always following world trends.
-
-## Screenshoots
-
-<div align="center">
-    <img width="100%" src="./Group 57.png">
-<!--     <img width="100%" src="">
-    <img width="100%" src=""> -->
-</div>
 
 ## Features
 
@@ -74,9 +66,17 @@ API_URL = "http://localhost:4000"
 
 ### Usage
 
-`node index` OR `nodemon start` OR `npm start`.
+`npx react-native run-android` .
 
 Connect your Android Emulator or Devices to runs the app in the development mode.
+
+## Screenshoots
+
+<div align="center">
+    <img width="100%" src="./Group 57.png">
+<!--     <img width="100%" src="">
+    <img width="100%" src=""> -->
+</div>
 
 ## Demo
 
