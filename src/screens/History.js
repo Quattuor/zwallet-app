@@ -10,13 +10,19 @@ import {bobi, momo, netflix, spotify, susi} from '../assets';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActionSheet from 'react-native-actions-sheet';
 import CalendarPicker from 'react-native-calendar-picker';
+import {useSelector, useDispatch} from 'react-redux';
 import Card from '../components/Card';
+import {API_URL} from '@env';
+import {setHistory} from '../utils/redux/actionCreators/history';
 
 const actionSheetRef = createRef();
 const History = ({navigation}) => {
   //   let actionSheet;
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const history = useSelector((state) => state.history.history);
+
+  console.log(history);
 
   console.log(startDate);
 
@@ -27,6 +33,16 @@ const History = ({navigation}) => {
       setStartDate(date), setEndDate(null);
     }
   };
+
+  const toTop = () => {
+    const sorting = history.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime(),
+      console.log(sorting),
+    );
+  };
+
+  const toLow = () => {};
 
   const startDatePick = startDate ? startDate.toString() : '';
   const endDatePick = endDate ? endDate.toString() : '';
@@ -42,52 +58,26 @@ const History = ({navigation}) => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.textThis}>This Week</Text>
-        <Card
-          navigation={navigation}
-          name="Samuel Suhi"
-          Img={susi}
-          status="Transfer"
-          price="149000"
-          style={styles.card}
-        />
-        <Card
-          navigation={navigation}
-          name="Spotify"
-          Img={spotify}
-          status="Subscription"
-          price="-49000"
-          style={styles.card}
-        />
-
-        <Text style={styles.textThis}>This Month</Text>
-        <Card
-          navigation={navigation}
-          name="Netflix"
-          Img={netflix}
-          status="Subscription"
-          price="-149000"
-          style={styles.card}
-        />
-        <Card
-          navigation={navigation}
-          name="Bobi"
-          Img={bobi}
-          status="Transfer"
-          price="1150000"
-          style={styles.card}
-        />
-        <Card
-          navigation={navigation}
-          name="Momo"
-          Img={momo}
-          status="Transfer"
-          price="-200000"
-          style={styles.card}
-        />
+        {history &&
+          history.map((item, i) => {
+            // console.log(API_URL + item.image);
+            return (
+              <Card
+                key={i}
+                navigation={navigation}
+                name={item.name ? item.name : item.first_name}
+                type={item.type}
+                Img={API_URL + item.image}
+                status={item.name ? 'Transfer' : 'Subscription'}
+                price={item.balance}
+                style={styles.card}
+              />
+            );
+          })}
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity onPress={() => toTop()} style={styles.btn}>
             <Icon
               name="arrow-up"
               size={30}

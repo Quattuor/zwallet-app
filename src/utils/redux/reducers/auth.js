@@ -129,6 +129,30 @@ const authReducer = (prevState = initialState, action) => {
         err: {},
       };
 
+    case 'OTP' + pending:
+      return {
+        ...prevState,
+        isPending: true,
+        isRejected: false,
+        isFulfilled: false,
+      };
+    case 'OTP' + rejected:
+      return {
+        ...prevState,
+        isPending: false,
+        isRejected: true,
+        err: action.payload.data,
+        pin: {},
+      };
+    case 'OTP' + fulfilled:
+      return {
+        ...prevState,
+        isPending: false,
+        isFulfilled: true,
+        send: action.payload.data,
+        err: {},
+      };
+
     default:
       return {
         ...prevState,

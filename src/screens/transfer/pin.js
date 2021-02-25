@@ -9,11 +9,16 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
+  Keyboard,
 } from 'react-native';
 import SmoothPinCode from 'react-native-smooth-pincode-input';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import {API_URL} from '@env';
+import {useSelector} from 'react-redux';
 
-const ChangePin = ({navigation}) => {
+const ChangePin = ({navigation, route}) => {
   const [code, setCode] = useState('');
   const filled = () => {
     if (code.length === 6) {
@@ -21,6 +26,76 @@ const ChangePin = ({navigation}) => {
     } else {
       return false;
     }
+  };
+
+  const [params] = useState(route.params);
+  const token = useSelector((state) => state.auth.login.data.token);
+  const id = useSelector((state) => state.auth.login.data.id);
+  const photo = useSelector((state) => state.auth.login.data.photo);
+  const username = useSelector((state) => state.auth.login.data.username);
+  const phone = useSelector((state) => state.auth.login.data.phone);
+
+  const checkPin = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token,
+      },
+    };
+    const payload = {
+      id_user: id,
+      id_contact: params.id_contact,
+      balance: Number(params.amount),
+      notes: params.notes === null ? ' ' : params.notes,
+    };
+    axios
+      .get(`${API_URL}/user/PIN/${code}`, config)
+      .then(() => {
+        axios
+          .post(`${API_URL}/history/transfer`, payload)
+          .then(() => {
+            navigation.reset({
+              index: 1,
+              routes: [
+                {name: 'Home'},
+                {
+                  name: 'transferSuccess',
+                  params: {
+                    ...params,
+                    id_user: id,
+                    photo_user: photo,
+                    username,
+                    phone_user: phone,
+                  },
+                },
+              ],
+            });
+          })
+          .catch(() => {
+            navigation.reset({
+              index: 1,
+              routes: [
+                {name: 'Home'},
+                {
+                  name: 'transferFailed',
+                  params: {
+                    ...params,
+                    id_user: id,
+                    photo_user: photo,
+                    username,
+                    phone_user: phone,
+                  },
+                },
+              ],
+            });
+          });
+      })
+      .catch(() => {
+        ToastAndroid.show('Wrong PIN', ToastAndroid.SHORT);
+        // navigation.reset({
+        //   index: 1,
+        //   routes: [{name: 'Home'}, {name: 'transferFailed'}],
+        // })
+      });
   };
 
   return (
@@ -69,13 +144,7 @@ const ChangePin = ({navigation}) => {
         style={styles.container}>
         <TouchableOpacity
           style={!filled() ? styles.btn : styles.btnActive}
-          onPress={() =>
-            filled() &&
-            navigation.reset({
-              index: 1,
-              routes: [{name: 'Home'}, {name: 'transferSuccess'}],
-            })
-          }>
+          onPress={() => filled() && (Keyboard.dismiss(), checkPin())}>
           <Text style={!filled() ? styles.continue : styles.continueActive}>
             Transfer Now
           </Text>

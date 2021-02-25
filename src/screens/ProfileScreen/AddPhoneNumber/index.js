@@ -42,6 +42,7 @@ const AddPhoneNumber = ({navigation}) => {
         };
         const updatePhone = {
           phone: number,
+          id_virtual: '2389' + number,
         };
         axios
           .patch(`${API_URL}/user/${id}`, updatePhone, config)

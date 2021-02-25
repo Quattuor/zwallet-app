@@ -126,6 +126,12 @@ const homeStyles = StyleSheet.create({
     fontSize: 18,
     color: '#1EC15F',
   },
+  cardType2: {
+    ...fontFamily,
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#FF5B37',
+  },
 });
 
 export default homeStyles;

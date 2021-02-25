@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,11 +6,25 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
+import {API_URL} from '@env';
 
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const confirmation = ({navigation}) => {
+const Confirmation = ({navigation, route}) => {
+  const timeStamp = new Date(Date.now());
+  const [date] = useState(String(timeStamp).split(' ').slice(1, 4));
+  const [time] = useState(String(timeStamp).split(' ')[4].split(':'));
+  const {
+    id_contact,
+    phone_contact,
+    photo_contact,
+    username_contact,
+    amount,
+    balanceLeft,
+    notes,
+  } = route.params;
   return (
     <View style={s.background}>
       <View style={s.header}>
@@ -32,12 +46,17 @@ const confirmation = ({navigation}) => {
             <Text style={s.infoNav}>Confirmation</Text>
           </View>
           <View style={s.headerInfo}>
-            <View style={s.userImage}>
+            {photo_contact !== null ? (
+              <Image
+                style={s.userImage}
+                source={{uri: API_URL + photo_contact}}
+              />
+            ) : (
               <Icons name="account-outline" color="#6379F4" size={50} />
-            </View>
+            )}
             <View style={s.infoContent}>
-              <Text style={s.infoUsername}>...</Text>
-              <Text style={s.infoPhone}>...</Text>
+              <Text style={s.infoUsername}>{username_contact}</Text>
+              <Text style={s.infoPhone}>{phone_contact}</Text>
             </View>
           </View>
         </View>
@@ -48,37 +67,53 @@ const confirmation = ({navigation}) => {
           <View style={s.wrapRow}>
             <View style={s.card1}>
               <Text style={s.headerCard}>Amount</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {amount} </Text>
             </View>
 
             <View style={s.card2}>
               <Text style={s.headerCard}>Balance left</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {balanceLeft} </Text>
             </View>
           </View>
 
           <View style={s.wrapRow}>
             <View style={s.card1}>
               <Text style={s.headerCard}>Date</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}>
+                {`${date[0]} ${date[1]}, ${date[2]}`}
+              </Text>
             </View>
 
             <View style={s.card2}>
               <Text style={s.headerCard}>Time</Text>
-              <Text style={s.contentCard}> Loading </Text>
+              <Text style={s.contentCard}> {`${time[0]}.${time[1]}`} </Text>
             </View>
           </View>
 
           <View style={s.card3}>
             <Text style={s.headerCard}>Notes</Text>
-            <Text style={s.contentCard}> Loading </Text>
+            <Text style={s.contentCard}>
+              {notes === null ? 'Without notes' : notes}{' '}
+            </Text>
           </View>
         </View>
       </ScrollView>
       <View style={s.buttonAct}>
         <TouchableOpacity
           style={s.button}
-          onPress={() => navigation.navigate('pinToTransfer')}>
+          onPress={() =>
+            navigation.navigate('pinToTransfer', {
+              id_contact,
+              phone_contact,
+              photo_contact,
+              username_contact,
+              amount,
+              balanceLeft,
+              notes,
+              date: `${date[0]} ${date[1]}, ${date[2]}`,
+              time: `${time[0]}.${time[1]}`,
+            })
+          }>
           <Text style={s.buttonText}>Continue</Text>
         </TouchableOpacity>
       </View>
@@ -86,7 +121,7 @@ const confirmation = ({navigation}) => {
   );
 };
 
-export default confirmation;
+export default Confirmation;
 
 const s = StyleSheet.create({
   background: {
