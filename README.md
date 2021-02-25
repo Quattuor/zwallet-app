@@ -72,11 +72,19 @@ Connect your Android Emulator or Devices to runs the app in the development mode
 
 ## Screenshoots
 
-<div align="center">
-    <img width="100%" src="./Group 57.png">
-<!--     <img width="100%" src="">
-    <img width="100%" src=""> -->
-</div>
+<table>
+  <tr>
+    <td valign="center"><img src="./src/assets/icon/Zwallet-1.jpg" height="400px" width="225px"></td>
+    <td valign="center"><img src="./src/assets/icon/Zwallet-2.jpg" height="400px" width="225px"></td>
+  </tr>
+ </table>
+
+<table>
+  <tr>
+    <td valign="center"><img src="./src/assets/icon/Zwallet-3.jpg" height="400px" width="225px"></td>
+    <td valign="center"><img src="./src/assets/icon/Zwallet-4.jpg" height="400px" width="225px"></td>
+  </tr>
+</table>
 
 ## Demo
 

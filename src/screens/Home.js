@@ -28,7 +28,7 @@ class Home extends Component {
           <View style={styles.nameArea}>
             <View style={styles.titleArea}>
               <Text style={styles.hello}>Hello,</Text>
-              <Text style={styles.name}>Robert Chandler</Text>
+              <Text style={styles.name}>Muhammad Shohib</Text>
             </View>
             <TouchableOpacity style={styles.btnBell}>
               <IconF name="bell" color="#4D4B57" size={23} />
@@ -64,10 +64,10 @@ class Home extends Component {
               <Image source={Photo} style={styles.photo} />
               <View style={styles.nameArea}>
                 <View>
-                  <Text style={styles.cardTitle}>Samuel Suhi</Text>
+                  <Text style={styles.cardTitle}>Albert</Text>
                   <Text style={styles.cardSub}>Transfer</Text>
                 </View>
-                <Text style={styles.cardType1}>+Rp50.000</Text>
+                <Text style={styles.cardType1}>+Rp150.000</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -79,7 +79,7 @@ class Home extends Component {
                   <Text style={styles.cardTitle}>Samuel Suhi</Text>
                   <Text style={styles.cardSub}>Transfer</Text>
                 </View>
-                <Text style={styles.cardType1}>+Rp50.000</Text>
+                <Text style={styles.cardType1}>+Rp250.000</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -88,10 +88,10 @@ class Home extends Component {
               <Image source={Photo} style={styles.photo} />
               <View style={styles.nameArea}>
                 <View>
-                  <Text style={styles.cardTitle}>Samuel Suhi</Text>
+                  <Text style={styles.cardTitle}>John Bambang</Text>
                   <Text style={styles.cardSub}>Transfer</Text>
                 </View>
-                <Text style={styles.cardType1}>+Rp50.000</Text>
+                <Text style={styles.cardType1}>+Rp350.000</Text>
               </View>
             </View>
           </TouchableOpacity>
