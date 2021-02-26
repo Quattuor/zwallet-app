@@ -144,7 +144,10 @@ class Home extends Component {
           <View style={styles.topArea}>
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('Profile')}>
-              <Image source={Photo} style={styles.photo} />
+              <Image
+                source={login.data ? {uri: API_URL + login.data.photo} : Photo}
+                style={styles.photo}
+              />
             </TouchableOpacity>
             <View style={styles.nameArea}>
               <View style={styles.titleArea}>

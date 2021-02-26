@@ -76,6 +76,12 @@ class Login extends Component {
       }
 
       if (login.data) {
+        this.setState({
+          user: {
+            email: '',
+            pass: '',
+          },
+        });
         if (login.data.pin) {
           navigation.reset({
             index: 0,

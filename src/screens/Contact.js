@@ -59,6 +59,7 @@ const Contact = ({navigation}) => {
     listContact();
   }, [listContact]);
 
+  console.log(receiver);
   return (
     <>
       <StatusBar barStyle="white" translucent backgroundColor="#6379F4" />
