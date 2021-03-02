@@ -92,7 +92,7 @@ Connect your Android Emulator or Devices to runs the app in the development mode
 
 Zwallet build version.
 
-[Download](https://drive.google.com/file/d/1j1Dh8h44u2UlVkXILNw_YjBtb4QIMirq/view?usp=sharing)
+[Download](http://www.mediafire.com/file/i72rganpkvwy5yn/Zwallet.apk/file)
 
 ## Related Project
 
